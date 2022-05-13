@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'https://0408-98-51-6-222.ngrok.io'

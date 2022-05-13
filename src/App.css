@@ -1,0 +1,88 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.containerSC{
+  min-height: 100%;
+  height:100%;
+  margin:100px auto;
+  background: rgb(233,233,233);
+  padding:0;
+
+}
+
+.dimScreenSC{
+  position:fixed;
+  padding:0;
+  margin:0;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgb(255,255,255);
+  overflow-y:scroll;
+}
+
+
+.dottedLineSC{
+  border-top:dotted 2px;
+  color:gray;
+  width:100%;
+
+}
+.checkoutPayButtonSC{
+  width:45%;
+}
+
+.StripeElement {
+    
+  width: 100%;
+  padding: 12px 5px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+}
+
+#map {
+  height: 100vh;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
