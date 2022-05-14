@@ -141,7 +141,7 @@ class HotelSearch extends React.Component {
 
 	fetchSearchResult() {
 		const params = new URLSearchParams(this.props.location.search)
-		const queryCall = BACKEND_URL + 'searchHotels/' + params.get("city");
+		const queryCall = BACKEND_URL + 'searchHotels'+"/" + params.get("city");
 
 		
 		const sortBy = params.get("sortBy")

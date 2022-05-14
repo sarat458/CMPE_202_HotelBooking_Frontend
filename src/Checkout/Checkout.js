@@ -113,7 +113,7 @@ else{
 
     // })
     this.setState({
-      rewardPoint: 500
+      rewardPoint: localStorage.getItem('rewardPoints')
     })
         
   }
@@ -276,7 +276,7 @@ class _CheckoutPaymentCheck extends React.Component
     //   // console.log("resReward "+JSON.stringify(res.data.reward));
     // })
     this.setState({
-      rewardPoint: 200
+      rewardPoint: localStorage.getItem('rewardPoints')
     })
         
   }

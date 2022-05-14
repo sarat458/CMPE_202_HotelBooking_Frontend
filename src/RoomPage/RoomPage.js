@@ -411,8 +411,8 @@ class RoomPage extends React.Component {
 							{this.state.verifyCheckout ? <div className="room-page-verify-checkout"> Unable to checkout </div> : null}
 							{this.state.verifyRooms ? <div className="room-page-verify-checkout"> Please select a room </div> : null}
 							{this.state.verifyGuests ? <div className="room-page-verify-checkout"> Please select enough rooms to accomodate all guests </div> : null}
-							{!localStorage.accesstoken? null : <p style={{ color: '#f977a1' }}>Please login to proceed to check out</p>}
-							<Button disabled={localStorage.accesstoken || parseInt(this.handleRoomPrice())===0} className="home-submit-button btn btn-primary py-3 px-5 mb-5" onClick={this.Checkout.bind(this)}>Checkout</Button>
+							{localStorage.accesstoken? null : <p style={{ color: '#f977a1' }}>Please login to proceed to check out</p>}
+							<Button disabled={!localStorage.accesstoken || parseInt(this.handleRoomPrice())===0} className="home-submit-button btn btn-primary py-3 px-5 mb-5" onClick={this.Checkout.bind(this)}>Checkout</Button>
 
 						</div>
 					</div>
