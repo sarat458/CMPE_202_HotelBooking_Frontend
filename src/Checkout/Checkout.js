@@ -12,7 +12,6 @@ import axios from 'axios'
 ////////Payment////
 
 import NumberFormat from 'react-number-format';
-import { BACKEND_URL } from "../Configuration/config";
 
 // URL EXAMPLE
 //?date_in=2019-05-15&date_out=2019-05-17&guest_number=2&hotel_id=41&city=Las%2520Vegas&country=United%20States%20of%20America&state=Nevada&address=600%20E%20Fremont%20St&hotelname=El%20Cortez%20Hotel%20and%20Casino&rooms=%7B%22results%22:%5B%7B%22hotel_id%22:41,%22bed_type%22:%22King%22,%22price%22:40,%22capacity%22:2,%22images%22:%22https://www.plazahotelcasino.com/wp-content/uploads/2014/11/DeluxeKing-GalleryPhotos-1-1024x512.jpg%22,%22quantity%22:1,%22room_ids%22:%2291%22,%22desired_quantity%22:%221%22%7D,%7B%22hotel_id%22:41,%22bed_type%22:%22Queen%22,%22price%22:40,%22capacity%22:2,%22images%22:%22https://www.plazahotelcasino.com/wp-content/uploads/2019/02/DeluxeQueen-GalleryPhotos-2-1024x512.jpg%22,%22quantity%22:1,%22room_ids%22:%2292%22,%22desired_quantity%22:0%7D%5D,%22totalResultCount%22:2%7D
@@ -114,7 +113,7 @@ else{
 
     // })
     this.setState({
-      rewardPoint: localStorage.getItem('rewardPoints')
+      rewardPoint: 500
     })
         
   }
@@ -277,7 +276,7 @@ class _CheckoutPaymentCheck extends React.Component
     //   // console.log("resReward "+JSON.stringify(res.data.reward));
     // })
     this.setState({
-      rewardPoint: localStorage.getItem('rewardPoints')
+      rewardPoint: 200
     })
         
   }
@@ -338,18 +337,6 @@ class _CheckoutPaymentCheck extends React.Component
  
 async submit(ev) {
   this.props.history.push(`/Confirmation`);
-  axios.post(BACKEND_URL+'/userbooking',{
-            userId:'',
-            hotelId:'',
-            hotelName:'',
-            checkInDate:'',
-            checkOutDate:'',
-            roomType:'',
-            guestList:'',
-            amountPaid:'',
-            bookingStatus:'',
-            bookingDate:''
-  })
 }
 
 
@@ -426,8 +413,7 @@ async submit(ev) {
            <Button
                color="warning"
                onClick={this.toggle}
-               style={{ marginBottom: "1rem",  width: '90%'}}    
-               disabled={this.state.rewardPoint<0?false:true}   
+               style={{ marginBottom: "1rem",  width: '90%'}}      
              >
                Pay with Reward Points
              </Button>

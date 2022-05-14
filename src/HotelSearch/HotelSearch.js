@@ -14,6 +14,7 @@ import 'react-dates/initialize'
 import { DateRangePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 import moment from 'moment'
+import {BACKEND_URL} from '../Configuration/config'
 
 import { sortByDropDownData } from '../Utility/DataForMenu'
 import AmenityFilterDropdown from './Components/AmenityFilterDropdown'
@@ -52,10 +53,7 @@ class HotelSearch extends React.Component {
 
 		this.state = {
 			hotels:{
-				results:[{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.913165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"81.23","max_price":"100.45"},
-				{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.813165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"55.23","max_price":"101.45"},
-				{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3526442","longitude":"-121.8413165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"45.23","max_price":"102.45"},
-				{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.793165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"75.23","max_price":"103.45"}]
+				results:[]
 			} ,
 			searchClickedToggle: false,
 			sortBySelectedToggle: false,
@@ -142,36 +140,30 @@ class HotelSearch extends React.Component {
 	}
 
 	fetchSearchResult() {
-		const queryCall = '/api/search/hotels' + this.props.location.search
-
 		const params = new URLSearchParams(this.props.location.search)
+		const queryCall = BACKEND_URL + 'searchHotels/' + params.get("city");
+
+		
 		const sortBy = params.get("sortBy")
 		if (!sortBy) {
 			this.setState({ sortBy: '' })
 		}
-		// const hotels=[
-		// 	{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.913165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":81.21,"max_price":100.45},
-		// 	{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","lattitude":"37.3226442","longitude":"-121.913165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":55.23,"max_price":101.45},
-		// 	{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","lattitude":"37.3226442","longitude":"-121.913165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":45.23,"max_price":102.45},
-		// 	{"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","lattitude":"37.3226442","longitude":"-121.913165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":75.23,"max_price":103.45},
-		// ];
 		this.loadGoogleMap()
-		//this.setState({hotels:hotels})
-		// axios.get(queryCall).then(result => {
-		// 	this.setState({
-		// 		hotels: result.data
-		// 	})
-		// })
-		// 	.then(() => {
-		// 		this.loadGoogleMap()
-		// 	})
+		axios.get(queryCall).then(result => {
+			this.setState({
+				hotels: result.data
+			})
+		})
+			.then(() => {
+				this.loadGoogleMap()
+			})
 	}
 
 	loadGoogleMap() {
 		const params = new URLSearchParams(this.props.location.search);
 		const latitude = parseFloat(params.get('latitude'))
 		const longitude = parseFloat(params.get('longitude'))
-
+		if(window.google===undefined) return;
 		const googleMap = new window.google.maps.Map(document.getElementById('map'), {
 			center: { lat: latitude, lng: longitude },
 			zoom: 14
@@ -382,15 +374,15 @@ class HotelSearch extends React.Component {
 		// })
 	}
 
-	roomSearch = item => event => {
+	roomSearch = (hotel) => {
 		const params = new URLSearchParams(this.props.location.search);
 		const date_in = params.get('date_in')
 		const date_out = params.get('date_out')
 		const guest_number = params.get('guest_number')
 		const city = params.get('city')
 
-		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${item.hotel_id}&city=${city}`
-
+		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel.id}&city=${city}`
+		localStorage.setItem("hotelDetails",JSON.stringify(hotel));
 		this.props.history.push({
 			pathname: `/RoomPage`,
 			search: `${queryString}`,
@@ -420,6 +412,7 @@ class HotelSearch extends React.Component {
 	}
 
 	moveMap(lat, lng, index) {
+		if(window.google===undefined) return;
 		var center = new window.google.maps.LatLng(lat, lng);
 		window.googleMap.panTo(center);
 		window.markers.forEach((eachMarker, i) => {
@@ -445,6 +438,10 @@ class HotelSearch extends React.Component {
 			return arraychecker[0]
 		}
 		return images
+	}
+
+	hotelClick = (id) => {
+		console.log("check",id);
 	}
 
 	render() {
@@ -555,20 +552,20 @@ class HotelSearch extends React.Component {
 				<tbody>
 					{this.state.hotels.results.map((eachHotelResult, index) => {
 						// const imageURL = this.getHotelSearchResultImages(eachHotelResult.images)
-						const imageURL=""
+						const imageURL="https://media.istockphoto.com/photos/marriott-walnut-creek-picture-id1067000654?k=20&m=1067000654&s=612x612&w=0&h=dazJ7HWfdBz3c9593B53TS_lMmvgn2ax1HOT7OLiMuk="
 						return (
-							<tr key={index} className="hotel-search-row shadow-sm p-3 mb-5" tag="a" onMouseEnter={() => this.moveMap(eachHotelResult.latitude, eachHotelResult.longitude, index)} style={{ cursor: "pointer" }}>
-								<td className="">
+							<tr key={index} className="hotel-search-row shadow-sm p-3 mb-5" tag="a" id={eachHotelResult.id} onClick={(e)=>{this.roomSearch(eachHotelResult)}} onMouseEnter={() => this.moveMap(eachHotelResult.latitude, eachHotelResult.longitude, index)} style={{ cursor: "pointer" }}>
+								<td id={eachHotelResult.id} className="">
 									<img className="hotel-search-item-image" src={imageURL} alt="logo" />
 								</td>
-								<td className="">
+								<td id={eachHotelResult.id} className="">
 									<div>
-										<div className="hotel-search-item-row hotel-search-item-header">
+										<div id={eachHotelResult.id} className="hotel-search-item-row hotel-search-item-header">
 											<div className="hotel-search-item-number">{index + 1}.</div>
 											<div className="hotel-search-item-name"> {/* Hotel Name */} </div>
 											<a href=" " className="col-lg-10 hotel-search-item-name">{eachHotelResult.name}</a>
 										</div>
-										<div className="hotel-search-item-row hotel-search-item-rating">
+										<div id={eachHotelResult.id} className="hotel-search-item-row hotel-search-item-rating">
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>
@@ -585,8 +582,8 @@ class HotelSearch extends React.Component {
 									</div>
 								</td>
 								<td className="">
-									<div>
-										<div className="hotel-search-item-row">
+									<div id={eachHotelResult.id}>
+										<div id={eachHotelResult.id} className="hotel-search-item-row">
 
 											{/* Min Price */}
 											<div className="hotel-search-item-price">
@@ -653,3 +650,14 @@ class HotelSearch extends React.Component {
 }
 
 export default withRouter(HotelSearch);
+
+
+
+// results:[{"id":1,"location":"san jose","description":"Marriott International, Inc. is a Fortune 500 company with more than 7,000 hotels and resorts in 130 countries and territories—including many in the Capital Region of Washington, D.C., Maryland, and Virginia.The company, headquartered in Bethesda, Maryland, was founded by J. Willard and Alice S. Marriott in 1927, and their son, J.W. “Bill” Marriott, Jr., spent more than 50 years shaping it into one of the world’s leading hospitality companies. Marriott is consistently recognized as one of the “Best Places to Work” and leads the industry with innovations that elevate style, design, and technology.","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi,Pool,AC,TV","latitude":"37.3226442","longitude":"-121.913165","state":"CA","country":"USA","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"81.23","max_price":"100.45"},
+// 				{"id":2,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.813165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","state":"CA","country":"USA","min_price":"55.23","max_price":"101.45"},
+// 				{"id":3,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3596442","longitude":"-121.8413165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"45.23","max_price":"102.45"},
+// 				{"id":4,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3226442","longitude":"-121.793165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"75.23","max_price":"103.45"},
+// 				{"id":3,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3526442","longitude":"-121.8413165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"45.23","max_price":"102.45"},
+// 				{"id":4,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3326442","longitude":"-121.793165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"75.23","max_price":"103.45"},
+// 				{"id":3,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3126442","longitude":"-121.8413165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"45.23","max_price":"102.45"},
+// 				{"id":4,"location":"san jose","priceRange":"100-200$","phone_number":"6695326478","amenities":"Wifi","latitude":"37.3026442","longitude":"-121.793165","name":"Marriot Inn","address":"754 the alameda","city":"San Jose","min_price":"75.23","max_price":"103.45"}]
