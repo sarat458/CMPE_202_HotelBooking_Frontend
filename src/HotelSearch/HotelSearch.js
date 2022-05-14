@@ -178,6 +178,9 @@ class HotelSearch extends React.Component {
 		const infoWindow = new window.google.maps.InfoWindow()
 		window.infoWindow = infoWindow
 		window.markers = []
+		if(this.state.hotels.results=="Hotels not found" || this.state.hotels.results.length==0){
+			return
+		}
 		this.state.hotels.results.forEach((eachHotel, index) => {
 			// const imageURL = this.getHotelSearchResultImages(eachHotel.images)
 			//const imageURL = this.getHotelSearchResultImages(eachHotel.images).split(",")[0]
@@ -539,18 +542,19 @@ class HotelSearch extends React.Component {
 		)
 
 		const sortByDropdown = (
-			<select name="sortBy" onChange={this.getHotelSearchResult} value={this.state.sortBy}>
-				<option value="" disabled hidden >Sort By</option>
-				{sortByDropDownData.map((each, key) => {
-					return <option key={key} value={each.value} label={each.label}></option>
-				})}
-			</select>
+			// <select name="sortBy" onChange={this.getHotelSearchResult} value={this.state.sortBy}>
+			// 	<option value="" disabled hidden >Sort By</option>
+			// 	{sortByDropDownData.map((each, key) => {
+			// 		return <option key={key} value={each.value} label={each.label}></option>
+			// 	})}
+			// </select>
+			 <></>
 		)
 
 		const HotelTable = (
 			<Table hover borderless>
 				<tbody>
-					{this.state.hotels.results.map((eachHotelResult, index) => {
+					{ this.state.hotels.results!="Hotels not found" && this.state.hotels.results.map((eachHotelResult, index) => {
 						// const imageURL = this.getHotelSearchResultImages(eachHotelResult.images)
 						const imageURL="https://media.istockphoto.com/photos/marriott-walnut-creek-picture-id1067000654?k=20&m=1067000654&s=612x612&w=0&h=dazJ7HWfdBz3c9593B53TS_lMmvgn2ax1HOT7OLiMuk="
 						return (
