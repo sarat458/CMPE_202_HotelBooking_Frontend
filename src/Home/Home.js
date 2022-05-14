@@ -9,7 +9,7 @@ import './CSS/react_dates_overrides.css'; //NEEDED in order to OVERRIDE css styl
 import { HotelSearchFunction, extractFromAddress } from '../Utility/HotelSearchFunction'
 import Autocomplete from "../Utility/Autocomplete";
 
-import homeImage from './Images/homeImage14.jpeg';
+import homeImage from './Images/homeImage8.jpg';
 import {
 	Form, CustomInput, FormGroup
 } from 'reactstrap'
@@ -30,6 +30,7 @@ class Home extends React.Component {
 	constructor() {
 		super();
 		this.state = {
+			userName:'',
 			fullAddress: '',
 			streetAddress: '',
 			city: '',
@@ -49,6 +50,9 @@ class Home extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			userName:localStorage.getItem("userName")
+		})
 	}
 
 	handleChange = (event) => {
@@ -235,12 +239,11 @@ class Home extends React.Component {
 							<FormGroup>
 								<div className="col-lg-12 custom-row">
 									<div className="col-lg-6 top-header ml-lg-5 ">
-										<div className="subheading-sm">Welcome</div>
-										<div>Spartan Hotels</div>
+										<div className="h4">Welcome {!localStorage.getItem('userName')?'':this.state.userName}</div>
 					  				</div>
 				  				</div>
 
-				  				<div className="row mb-5 mr-lg-5 ml-lg-5">
+				  				<div className="row mt-5 p-5 mb-5 mr-lg-5 ml-lg-5">
 				  				  	<div className="col-md-12 home-inputs-container">
 
 				  				    <div className="block-32">

@@ -5,6 +5,7 @@ import "./UserProfile.css";
 import homeImage from './homeImage7.jpg';
 import ProfileEditName from './ProfileEditName'
 import ProfileEditPassword from './ProfileEditPassword'
+import { BACKEND_URL } from '../Configuration/config';
 
 import {
 	Card, CardText,
@@ -23,8 +24,8 @@ var topSectionStyle = {
 };
 
 class UserProfile extends React.Component {
+	
 	state = {
-
 		name: "",
 		email: "",
 		reward: "",
@@ -60,13 +61,25 @@ class UserProfile extends React.Component {
 
 
 	componentDidMount() {
-		axios.get('/api/profile')
-			.then(res =>
-				this.setState({
-					name: res.data.name,
-					email: res.data.email,
-					reward: res.data.reward
-				}))
+		// const url = BACKEND_URL+"/profile"
+		// // console.log(url);
+		// const userDetails = {
+		// 	userEmail:localStorage.getItem('accesstoken').email
+		// }
+		// axios.post(url,userDetails)
+		// 	.then(res =>{
+		// 		console.log(res.data);
+		// 		this.setState({
+		// 			name: res.data.name,
+		// 			email: res.data.email,
+		// 			reward: res.data.reward
+		// 		})
+		// 	})
+		this.setState({
+						name: localStorage.getItem('userName'),
+						email: localStorage.getItem('email'),
+						reward: localStorage.getItem('rewardPoints')
+					})
 	}
 
 	redirectToHome() {

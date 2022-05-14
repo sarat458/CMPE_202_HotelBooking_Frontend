@@ -24,6 +24,8 @@ class Registration extends React.Component {
         email: '',
         password: '',
         repassword: '',
+        mobile:'',
+        dob:''
       },
       errors: {
       },
@@ -102,13 +104,18 @@ class Registration extends React.Component {
         firstname: this.state.fields.firstname,
         lastname: this.state.fields.lastname,
         email: this.state.fields.email,
-        password: this.state.fields.password
+        password: this.state.fields.password,
+        dob:this.state.fields.dob,
+        mobile:this.state.fields.mobile
       }
       registerPost(temp_fields).then(response => {
+        console.log(response);
         if (response === 200) {
           this.setState({email_duplicate_error : false}, () => this.pushtoCurrentURL())
         } else if (response === 400) {
           this.setState({email_duplicate_error : true}, () => this.pushtoCurrentURL())
+        }else if(response==500){
+          this.setState({errors:true},()=>this.pushtoCurrentURL())
         }
       })
     }
@@ -147,6 +154,22 @@ class Registration extends React.Component {
       if (!temp_fields["lastname"].match(/^[a-zA-Z]*$/)) {
         formIsValid = false;
         temp_errors["lastname"] = "*Please enter English characters only.";
+      }
+    }
+
+    //([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))
+    if (temp_fields["dob"] !== '') {
+      if (!temp_fields["dob"].match(/^\d{4}-\d{2}-\d{2}$/)) {
+        formIsValid = false;
+        temp_errors["dob"] = "*YYYY-MM-DD";
+      }
+    }
+
+
+    if(temp_fields["mobile"] !==''){
+      if (!temp_fields["mobile"].match(/^\([0-9]{3}\) |[0-9]{3}-[0-9]{4}$/)) {
+        formIsValid = false;
+        temp_errors["mobile"] = "*Enter mobile number in this format (XXX) XXX-XXX";
       }
     }
 
@@ -243,6 +266,22 @@ class Registration extends React.Component {
                     <Label>Last Name</Label>
                     <Input type="text" name="lastname" value={this.state.fields.lastname} onChange={this.updateFields} placeholder="Einstein" required />
                     <div className="text-warning">{this.state.errors.lastname}</div>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row form>
+                <Col md={6}>
+                  <FormGroup>
+                    <Label>Date of Birth</Label>
+                    <Input type="text" name="dob" value={this.state.fields.dob} onChange={this.updateFields} placeholder="YYYY-MM-DD"/>
+                    <div className="text-warning">{this.state.errors.dob}</div>
+                  </FormGroup>
+                </Col>
+                <Col md={6}>
+                  <FormGroup>
+                    <Label>Mobile Number</Label>
+                    <Input type="text" name="mobile" value={this.state.fields.mobile} onChange={this.updateFields} placeholder="Enter mobile#" required />
+                    <div className="text-warning">{this.state.errors.mobile}</div>
                   </FormGroup>
                 </Col>
               </Row>

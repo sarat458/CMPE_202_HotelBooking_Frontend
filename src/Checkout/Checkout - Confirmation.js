@@ -4,16 +4,10 @@ import {withRouter} from 'react-router-dom'
 
 
 class CheckoutConfirm extends Component {
-
-
-
-
  constructor(props) {
   super(props);
   this.state = {complete: false};
 }
-
-
 
  state={
    //Payment

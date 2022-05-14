@@ -35,12 +35,16 @@ export const changeName = (temp_fields) => {
 }
 
 export const registerPost = temp_fields => {
-  return axios.post(BACKEND_URL+'/register', {
+  const payLoad = {
     firstname: temp_fields.firstname,
     lastname: temp_fields.lastname,
     email: temp_fields.email,
     password: temp_fields.password,
-  }).then(response => {
+    dob:temp_fields.dob,
+    mobile:temp_fields.mobile
+  }
+  console.log("payload",payLoad);
+  return axios.post(BACKEND_URL+'/signup', payLoad).then(response => {
     if (response.status === 200) {
       localStorage.setItem('accesstoken', response.data)
     }
@@ -58,8 +62,11 @@ export const loginPost = temp_fields => {
   }).then(response => {
     console.log("login result status: " , response)
     // log-in possible only when server says "S"
-    if (response.data === "S") {
-      localStorage.setItem('accesstoken', response.data)
+    if (response.data.isAuth==true) {
+      localStorage.setItem('accesstoken',response.data)
+      localStorage.setItem('userName',response.data.name)
+      localStorage.setItem('email',response.data.email)
+      localStorage.setItem('rewardPoints',response.data.rewardPoints)
     }
     return response.data
   }).catch(error => {

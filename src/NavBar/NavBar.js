@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom'
 import Registration from '../Registration/Registration'
 import { logoutClearSession, loginPost, verifyLogin } from '../Utility/ReigstrationLoginFunction'
-import imageLogo from './Images/logo.png'
+import imageLogo from './Images/logo.jpeg'
 // import neccessary components
 import {
   Form, FormGroup, Input
@@ -26,13 +26,13 @@ class NavBar extends React.Component {
 
   compoenentDidMount(prevProps) {
     if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
-      //verifyLogin()
+      verifyLogin()
 		}
   }
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
-      //verifyLogin()
+      verifyLogin()
 		}
   }
 
@@ -65,7 +65,7 @@ class NavBar extends React.Component {
           if (window.location.pathname === '/recoverage' || window.location.pathname === '/Accesscode')
             this.props.history.push('/')
         } else {
-          temp_loginerror = "*Please enter valid credentials (email or password) or reset password"
+          temp_loginerror = "*Please enter valid c  redentials (email or password) or reset password"
           this.setState({ loginerror: temp_loginerror })
           empty_fields["email"] = this.state.loginfields.email
         }
@@ -90,6 +90,17 @@ class NavBar extends React.Component {
     logoutClearSession()
     event.preventDefault()
     localStorage.removeItem('accesstoken')
+    localStorage.removeItem('userName')
+    localStorage.removeItem('email')
+    localStorage.removeItem('rewardPoints')
+    this.setState({
+      loginfields: {
+        email: '',
+        password: '',
+      },
+      emailerror: '',
+      loginerror: ''
+    })
     if (window.location.pathname === '/UserProfile' || window.location.pathname === '/Reservations')
       this.props.history.push('/')
     else
@@ -221,7 +232,7 @@ class NavBar extends React.Component {
         <div className="navbar-left form-inline my-2 my-lg-0" >
           <div className="col-auto pl-0 custom-row" onClick={this.Home.bind(this)}>
             <img className="imageLogo" src={imageLogo} alt="logologologo"></img>
-            <div>SPARTAN HOTELS</div>
+            <div>Avengers Group of Hotels</div>
           </div>
           {localStorage.accesstoken ? EmptyForm : <div className="">|</div>}
           {localStorage.accesstoken ? EmptyForm : <Registration />}
@@ -230,7 +241,6 @@ class NavBar extends React.Component {
 
         {/*RIGHT SIDE*/}
         <div className="navbar-right form-inline my-2 my-lg-0" >
-
           {localStorage.accesstoken ? ProfileLink : EmptyForm}
           {localStorage.accesstoken ? ReservationLink : EmptyForm}
           {localStorage.accesstoken ? EmptyForm : ResetPasswordLink}
