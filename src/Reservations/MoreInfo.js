@@ -8,6 +8,7 @@ import {
 	Button, Modal, ModalHeader,
 	ModalBody, Table
 } from 'reactstrap'
+import { BACKEND_URL } from '../Configuration/config';
 
 class MoreInfo extends React.Component {
 	constructor(props) {
@@ -26,7 +27,7 @@ class MoreInfo extends React.Component {
 // Not entirely sure to recognize which button is getting pressed though
 componentDidMount() {
       var that = this
-      axios.get('/api/reservations/viewres')
+      axios.get(BACKEND_URL+'/')
       .then(function(viewres) {
       	var room_info = []
       	// Group elements of viewres.data into reservations array. reservations is an array that contains multiple arrays that all hold

@@ -8,6 +8,7 @@ import axios from 'axios';
 import "./Reservations.css";
 import MoreInfo from './MoreInfo';
 import CancelConfirmation from './CancelConfirmation';
+import { BACKEND_URL } from '../Configuration/config';
 
 
 var pageStyle = {
@@ -32,7 +33,8 @@ class Reservations extends React.Component {
 
 	componentWillMount() {
 		var that = this
-		axios.get('/api/reservations/viewres')
+		console.log(JSON.parse(localStorage.getItem('accesstoken')).id);
+		axios.get(BACKEND_URL+'/getbookings/'+JSON.parse(localStorage.getItem('accesstoken')).id)
 			.then(function (viewres) {
 				var resInfo = []
 				var room_info = []
@@ -42,7 +44,7 @@ class Reservations extends React.Component {
 				var room_quan = 1
 				//Putting detailed room information on the panel. Include bed type, price, and quantity
 				//This stuff should now be handled in MoreInfo.js
-
+				console.log(viewres);
 				for (var i = 0; i < viewres.data.length; i++) {
 					bed_types.push(viewres.data[i].bed_type)
 					room_prices.push(viewres.data[i].price)
@@ -148,7 +150,7 @@ class Reservations extends React.Component {
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
 										<CancelConfirmation id={booking_id} /> </td>
 									<td>{status}</td>
-									<td> <MoreInfo id={booking_id} /> </td>
+									{/* <td> <MoreInfo id={booking_id} /> </td> */}
 								</tr>
 							)
 						} else {
@@ -161,7 +163,7 @@ class Reservations extends React.Component {
 									<td>${total_price}</td>
 									<td>       </td>
 									<td>{status}</td>
-									<td> <MoreInfo id={booking_id} /> </td>
+									{/* <td> <MoreInfo id={booking_id} /> </td> */}
 								</tr>
 							)
 						}

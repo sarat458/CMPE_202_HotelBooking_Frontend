@@ -7,6 +7,7 @@ import imageLogo from './Images/logo.jpeg'
 import {
   Form, FormGroup, Input
 } from 'reactstrap'
+import Admin from '../Admin/Admin';
 
 class NavBar extends React.Component {
   constructor() {
@@ -236,6 +237,7 @@ class NavBar extends React.Component {
           </div>
           {localStorage.accesstoken ? EmptyForm : <div className="">|</div>}
           {localStorage.accesstoken ? EmptyForm : <Registration />}
+          {localStorage.accesstoken ? EmptyForm : <Admin/>}
         </div>
 
 
