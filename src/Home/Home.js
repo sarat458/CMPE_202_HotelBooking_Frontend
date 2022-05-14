@@ -239,7 +239,8 @@ class Home extends React.Component {
 							<FormGroup>
 								<div className="col-lg-12 custom-row">
 									<div className="col-lg-6 top-header ml-lg-5 ">
-										<div className="h4">Welcome {!localStorage.getItem('userName')?'':this.state.userName}</div>
+										{/* <div className="h4">Welcome {!this.state.userName?'':this.state.userName}</div> */}
+										<div className="h4">Welcome</div>
 					  				</div>
 				  				</div>
 
@@ -316,7 +317,7 @@ class Home extends React.Component {
 
 				  				          </div>
 				  				        </div>
-													<div className="input-labels-guide">Try "Las Vegas" or "New Orleans"</div>
+													<div className="input-labels-guide">Try "San Jose" or "San Fransisco"</div>
 				  				    </div>
 				  				    <div className="col-lg-12">
 										<div className="form-checkboxes row home-checkboxes text-center">

@@ -25,15 +25,15 @@ class NavBar extends React.Component {
   }
 
   compoenentDidMount(prevProps) {
-    if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
-      verifyLogin()
-		}
+    // if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
+    //   verifyLogin()
+		// }
   }
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
-      verifyLogin()
-		}
+		// if (prevProps.location.search !== this.props.location.search || prevProps.location.state !== this.props.location.state) {
+    //   verifyLogin()
+		// }
   }
 
   updateFields(event) {

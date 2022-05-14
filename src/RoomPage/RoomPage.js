@@ -19,7 +19,9 @@ class RoomPage extends React.Component {
 
 		this.state = {
 			hotel: {},
-			rooms: {},
+			rooms: {
+				results:[]
+			},
 			hotel_id,
 			date_in,
 			date_out,
@@ -75,9 +77,9 @@ class RoomPage extends React.Component {
 			const totalPrice = this.totalPrice.toString()
 			const guest_number = this.state.guest_number.toString()
 			const city = this.state.city.toString()
-			const country = this.state.hotel.results[0].country.toString()
-			const state = this.state.hotel.results[0].state.toString()
-			const address = this.state.hotel.results[0].address.toString()
+			const country = this.state.hotel.results.country.toString()
+			const state = this.state.hotel.results.state.toString()
+			const address = this.state.hotel.results.address.toString()
 
 			this.props.history.push({
 				pathname: `/Checkout`,
@@ -98,17 +100,28 @@ class RoomPage extends React.Component {
 	}
 
 	async componentDidMount() {
-		const roomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=${this.state.date_in}&date_out=${this.state.date_out}`
-		const hotelSearchQuery = `/api/search/hotels?city=${this.state.city}&date_in=${this.state.date_in}&date_out=${this.state.date_out}&hotel_id=${this.state.hotel_id}`
+		//const roomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=${this.state.date_in}&date_out=${this.state.date_out}`
+		//const hotelSearchQuery = `/api/search/hotels?city=${this.state.city}&date_in=${this.state.date_in}&date_out=${this.state.date_out}&hotel_id=${this.state.hotel_id}`
 
-		const rooms = (await axios.get(roomSearchQuery)).data
-		const hotel = (await axios.get(hotelSearchQuery)).data
-		rooms.results.forEach((eachRoomResult, index) => {
-			rooms.results[index].desired_quantity = 0;
-		})
-		this.setState({
-			rooms, hotel
-		})
+		//const rooms = (await axios.get(roomSearchQuery)).data
+		// const hotel = (await axios.get(hotelSearchQuery)).data
+		// rooms.results.forEach((eachRoomResult, index) => {
+		// 	rooms.results[index].desired_quantity = 0;
+		// })
+		// this.setState({
+		// 	rooms, hotel
+		// })
+		let data={
+			results:JSON.parse(localStorage.getItem("hotelDetails"))
+		}
+		let roomsData={
+			results:[
+				{bed_type:"Single",price:126.1,capacity:2,quantity:10,desired_quantity:0},
+				{bed_type:"Double",price:196.1,capacity:2,quantity:5,desired_quantity:0},
+				{bed_type:"Suite",price:326.1,capacity:2,quantity:4,desired_quantity:0}
+			]
+		}
+		this.setState({hotel:data,rooms:roomsData});
 	}
 
 	handleEachRoomQuantity = (event) => {
@@ -136,7 +149,7 @@ class RoomPage extends React.Component {
 		this.state.rooms.results.map((eachRoomResult, index) =>
 			this.totalPrice = this.totalPrice + (eachRoomResult.price * eachRoomResult.desired_quantity)
 		);
-
+		console.log(this.totalPrice);
 		return this.totalPrice;
 
 	}
@@ -159,11 +172,11 @@ class RoomPage extends React.Component {
 		}
 
 		else {
-			const imageURLS = this.state.hotel.results[0].images;
-			let imageArray = []
-			if (imageURLS) {
-				imageArray = imageURLS.split(",");
-			}
+			// const imageURLS = this.state.hotel.results[0].images;
+			// let imageArray = []
+			// if (imageURLS) {
+			// 	imageArray = imageURLS.split(",");
+			// }
 
 			const roomPage = (
 				<div className="room-page-container">
@@ -193,7 +206,7 @@ class RoomPage extends React.Component {
 					<div className="room-page-rooms-container">
 						<div>
 							{
-								this.state.rooms.results.length > 0 ?
+								true ?
 									<div className="">
 										<div className="col-lg-12 custom-row room-page-hotel-container">
 											<div className="container">
@@ -203,7 +216,7 @@ class RoomPage extends React.Component {
 
 															<div className="col-md-4 text">
 
-																<h2 className="heading">{this.state.hotel.results[0].name}</h2>
+																<h2 className="heading">{this.state.hotel.results.name}</h2>
 
 																<div className="room-page-item-rating">
 																	<span className="fa fa-star hotel-search-item-rating-checked"></span>
@@ -214,15 +227,15 @@ class RoomPage extends React.Component {
 																</div>
 
 																<ul className="specs">
-																	<li> {this.state.hotel.results[0].address}, {this.state.hotel.results[0].city}, {this.state.hotel.results[0].state}, {this.state.hotel.results[0].zipcode} </li>
-																	<li> {this.state.hotel.results[0].phone_number}</li>
-																	<li> <sup>{this.state.hotel.results[0].description}</sup></li>
-																	<li style={{ color: '#38af7b' }}> {this.state.hotel.results[0].amenities}</li>
+																	<li> {this.state.hotel.results.address}, {this.state.hotel.results.city}, {this.state.hotel.results.state}, {this.state.hotel.results.zipcode} </li>
+																	<li> {this.state.hotel.results.phone_number}</li>
+																	<li> <sup>{this.state.hotel.results.description}</sup></li>
+																	<li style={{ color: '#38af7b' }}> {this.state.hotel.results.amenities}</li>
 																</ul>
 
 															</div>
 
-															<div className="col-md-8 room-page-image" style={{ backgroundImage: `url(${imageArray[0]})` }}>
+															<div className="col-md-8 room-page-image" style={{ backgroundImage: `url('https://media.istockphoto.com/photos/marriott-walnut-creek-picture-id1067000654?k=20&m=1067000654&s=612x612&w=0&h=dazJ7HWfdBz3c9593B53TS_lMmvgn2ax1HOT7OLiMuk=')` }}>
 															</div>
 														</div>
 													</div>
@@ -239,11 +252,11 @@ class RoomPage extends React.Component {
 														<div className="col-lg-4 mb-5" key={index}>
 															<div className="block-44">
 																<div className="room-page-image">
-																<img src={eachRoomResult.images} alt="Placeholder" />
+																<img src='https://media.istockphoto.com/photos/marriott-walnut-creek-picture-id1067000654?k=20&m=1067000654&s=612x612&w=0&h=dazJ7HWfdBz3c9593B53TS_lMmvgn2ax1HOT7OLiMuk=' alt="Placeholder" />
 																</div>
 																<div className="text">
 																	<h2 className="heading">{eachRoomResult.bed_type} Size Room</h2>
-																	<div className="price"><sup className="room-page-room-price">$</sup><span className="room-page-room-price">{eachRoomResult.price.toFixed(2)}</span><sub>/per night</sub></div>
+																	<div className="price"><sup className="room-page-room-price">$</sup><span className="room-page-room-price">{eachRoomResult.price}</span><sub>/per night</sub></div>
 																	<ul className="specs">
 																		<li><strong>Amenities:</strong> Closet with hangers, HD flat-screen TV, Telephone</li>
 																		<li><strong>Capacity Per Room:</strong> {eachRoomResult.capacity}</li>
@@ -360,9 +373,9 @@ class RoomPage extends React.Component {
 															<tr key={index}>
 																<td>{eachRoomResult.bed_type}</td>
 																<td>{eachRoomResult.capacity}</td>
-																<td>${eachRoomResult.price.toFixed(2)}</td>
+																<td>${eachRoomResult.price}</td>
 																<td>{eachRoomResult.desired_quantity} </td>
-																<td>$ {(eachRoomResult.desired_quantity * eachRoomResult.price).toFixed(2)}</td>
+																<td>$ {(eachRoomResult.desired_quantity * eachRoomResult.price)}</td>
 															</tr>
 														)
 													}
@@ -387,7 +400,7 @@ class RoomPage extends React.Component {
 												<td> </td>
 												<td> </td>
 												<td><strong> Estimated Total Per Night</strong></td>
-												<td> $ {this.handleRoomPrice().toFixed(2)}</td>
+												<td> $ {this.handleRoomPrice()}</td>
 											</tr>
 
 										</tbody>
@@ -398,8 +411,8 @@ class RoomPage extends React.Component {
 							{this.state.verifyCheckout ? <div className="room-page-verify-checkout"> Unable to checkout </div> : null}
 							{this.state.verifyRooms ? <div className="room-page-verify-checkout"> Please select a room </div> : null}
 							{this.state.verifyGuests ? <div className="room-page-verify-checkout"> Please select enough rooms to accomodate all guests </div> : null}
-							{localStorage.accesstoken? null : <p style={{ color: '#f977a1' }}>Please login to proceed to check out</p>}
-							<Button disabled={!localStorage.accesstoken || parseInt(this.handleRoomPrice()) === 0} className="home-submit-button btn btn-primary py-3 px-5 mb-5" onClick={this.Checkout.bind(this)}>Checkout</Button>
+							{!localStorage.accesstoken? null : <p style={{ color: '#f977a1' }}>Please login to proceed to check out</p>}
+							<Button disabled={!localStorage.accesstoken || parseInt(this.handleRoomPrice())===0} className="home-submit-button btn btn-primary py-3 px-5 mb-5" onClick={this.Checkout.bind(this)}>Checkout</Button>
 
 						</div>
 					</div>

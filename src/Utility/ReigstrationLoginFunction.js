@@ -36,8 +36,8 @@ export const changeName = (temp_fields) => {
 
 export const registerPost = temp_fields => {
   const payLoad = {
-    firstname: temp_fields.firstname,
-    lastname: temp_fields.lastname,
+    firstName: temp_fields.firstname,
+    lastName: temp_fields.lastname,
     email: temp_fields.email,
     password: temp_fields.password,
     dob:temp_fields.dob,
@@ -47,6 +47,10 @@ export const registerPost = temp_fields => {
   return axios.post(BACKEND_URL+'/signup', payLoad).then(response => {
     if (response.status === 200) {
       localStorage.setItem('accesstoken', response.data)
+      localStorage.setItem('userName',response.data.name)
+      localStorage.setItem('email',response.data.email)
+      localStorage.setItem('rewardPoints',response.data.rewardPoints)
+
     }
     return response.status
   }).catch(error => {

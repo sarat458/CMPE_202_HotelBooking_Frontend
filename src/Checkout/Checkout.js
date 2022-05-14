@@ -4,7 +4,6 @@ import { Button, Collapse } from "reactstrap";
 import "./../App.css";
 import { withRouter } from 'react-router-dom'
 
-import {Elements, StripeProvider} from 'react-stripe-elements';
 import axios from 'axios'
 //import './../AppSC.css';
 
@@ -13,7 +12,6 @@ import axios from 'axios'
 ////////Payment////
 
 import NumberFormat from 'react-number-format';
-import { injectStripe, CardCVCElement,CardNumberElement, CardExpiryElement, PostalCodeElement} from 'react-stripe-elements';
 import { BACKEND_URL } from "../Configuration/config";
 
 // URL EXAMPLE
@@ -108,12 +106,15 @@ else{
 
 
   componentDidMount() {
-    axios.get(BACKEND_URL+'/profile')
-    .then(res => {
-       this.setState({
-         rewardPoint: res.data.reward
-       })
+    // axios.get('/api/profile')
+    // .then(res => {
+    //    this.setState({
+    //      rewardPoint: res.data.reward
+    //    })
 
+    // })
+    this.setState({
+      rewardPoint: localStorage.getItem('rewardPoints')
     })
         
   }
@@ -123,8 +124,6 @@ else{
 
     return (
 
-      //Stripe Publishable Key 
-      <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLIC_KEY}> 
       <div className="dimScreenSC ">
 
             <div className="containerSC  w-75" style={{}}>
@@ -163,22 +162,16 @@ else{
               country={this.state.country}
               rooms={this.state.rooms}
               />
-     }  
+              }  
 
 
 
         
-           
-          <Elements>
-
-{/* ////////////Payment/////////   */}
-
-    
+              
             <div className="">
                 <CheckoutPaymentCheck
                 totalPrice ={this.state.totalPrice* this.state.nights_stayed}
                 rewardPoint={this.state.rewardPoint}
- 
                 date_in={this.state.date_in}
                 date_out={this.state.date_out}
                 hotel_id = {this.state.hotel_id}
@@ -188,11 +181,9 @@ else{
                 nights_stayed={this.state.nights_stayed}
                 />
             </div>
-          </Elements> 
           </div>
           </div>
       </div>
-      </StripeProvider>
      );
   }
 }
@@ -276,14 +267,17 @@ class _CheckoutPaymentCheck extends React.Component
    }
 
    componentDidMount() {
-    axios.get('/api/profile')
-    .then(res => {
-       this.setState({
-         rewardPoint: res.data.reward
-       })
-      // console.log("res"+JSON.stringify(res));
+    // axios.get('/api/profile')
+    // .then(res => {
+    //    this.setState({
+    //      rewardPoint: res.data.reward
+    //    })
+    //   // console.log("res"+JSON.stringify(res));
       
-      // console.log("resReward "+JSON.stringify(res.data.reward));
+    //   // console.log("resReward "+JSON.stringify(res.data.reward));
+    // })
+    this.setState({
+      rewardPoint: localStorage.getItem('rewardPoints')
     })
         
   }
@@ -343,132 +337,23 @@ class _CheckoutPaymentCheck extends React.Component
   
  
 async submit(ev) {
-  let {token} = await this.props.stripe.createToken({name: "SpartanHotel"});
-
-  // console.log(token)
-  // console.log(this.state.nights_stayed)
-  // console.log(this.state.totalPriceBeforeTaxAndRewards)
-
-
-  var desiredRooms=[{}];
-if(typeof(this.state.transaction_id) === 'undefined' || this.state.transaction_id === null)
-{
-    desiredRooms = this.state.rooms.filter( x => x.desired_quantity > 0 )
-}
-else{
-   desiredRooms = this.state.rooms;
-}
-  
-var totalRoomPricePerNight=0;
-if(typeof(this.state.transaction_id) === 'undefined' || this.state.transaction_id === null)
-{
-  totalRoomPricePerNight = desiredRooms.reduce( (acc,cur) => acc + (cur.price * cur.desired_quantity),0 )
-}
-else{
-  this.state.rooms.forEach(element => {
-    totalRoomPricePerNight += element.price*element.quantity
-  });
+  this.props.history.push(`/Confirmation`);
+  axios.post(BACKEND_URL+'/userbooking',{
+            userId:'',
+            hotelId:'',
+            hotelName:'',
+            checkInDate:'',
+            checkOutDate:'',
+            roomType:'',
+            guestList:'',
+            amountPaid:'',
+            bookingStatus:'',
+            bookingDate:''
+  })
 }
 
 
-  // console.log(`total room price per night ${totalRoomPricePerNight}`)
-  if(typeof(this.state.transaction_id) === 'undefined' || this.state.transaction_id === null)
-  desiredRooms.forEach( ele => {ele.quantity = ele.desired_quantity; delete ele.desired_quantity})
 
-  // console.log("cancellation:"+totalRoomPricePerNight );
-  // console.log(" nights stayed"+ this.state.nights_stayed);
-// Prepares the data for Metadata at server side
-let data={
-  id: token.id,
-  // amount cannot have any decimals. Stripe reads 1000 as 10.00
-  //parseFloat reduces the decimals to 2, then we multiple 100 to get rid of decimals 
-  
-  total_price:parseFloat(this.state.totalPriceBeforeTaxAndRewards).toFixed(2),
-  cancellation_charge: parseFloat( (totalRoomPricePerNight * this.state.nights_stayed * 0.20)).toFixed(2), // TODO: Change this later
-  date_in: this.state.date_in,
-  date_out: this.state.date_out,
-  rewards_applied: parseInt(this.state.discount*100),
-  rooms: desiredRooms,
-  hotel_id: this.state.hotel_id,
-  amount_due_from_user: parseFloat(this.state.total).toFixed(2),
-  transaction_id:this.state.transaction_id,
-
-  status: "Complete",
-  guest_id:"0",
-  
-}
-
-// console.log('aaaaaaaaaadatadatadatadata', data)
-
-if(typeof(this.state.transaction_id) === 'undefined' || this.state.transaction_id === null)
-{  
-  let response = await fetch("/api/checkout/charge", {
-    method: "POST",
-    headers: {"Content-Type": "text/plain"},
-    body: JSON.stringify(data),
-    
-  }).catch(error=>console.log("Error: "+error));
-
-  if (response.ok)
-  {
-    
-
-      this.props.history.push(`/Confirmation`);   
-  }
-  else{
-    // console.log(response)
-    let textPromise = await response.text()
-    // console.log(`textPromise is ${textPromise}`)
-    if ( textPromise.includes("Attempted booking overlaps")){
-        this.setState({
-          checkBookings:true,
-        })
-
-        // console.log(this.state.checkBookings)
-      // show message when no multiple booking condition at different hotel failed
-    }
-
-    // console.log("error "+ response.status)
-  }
-}
-else{
-
-// console.log("sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
-  let response = await fetch("/api/checkout/modify", {
-    method: "POST",
-    headers: {"Content-Type": "text/plain"},
-    body: JSON.stringify(data),
-    
-  }).catch(error=>console.log("Error: "+error));
-
-  if (response.ok)
-  {
-    
-      this.props.history.push(`/Confirmation`);   
-  }
-  else{
-    // console.log(response)
-    let textPromise = await response.text()
-    // console.log(`textPromise is ${textPromise}`)
-    if ( textPromise.includes("Attempted booking overlaps")){
-        this.setState({
-          checkBookings:true,
-        })
-
-        // console.log(this.state.checkBookings)
-      // show message when no multiple booking condition at different hotel failed
-    }
-
-    // console.log("error "+ response.status)
-  }
-
-
-
-
-}
-
-
-}
 
  
    
@@ -483,75 +368,7 @@ else{
  
    return (
     
- <div className="row" style={{marginRight:"0px", marginLeft:"0px"}}>
-     
- 
-       {/*   //////////////Payments///////////////////////                          */}
- 
-     <div className="card text-left w-50">
-       <h5 className="card-header">Payment Method</h5>
-       <div className="card-body" style={{backgroundColor: "#ffffff"}}>
-         <div className="row">
-           <div className="col-md-11">
-           <form action="/charge" method="post" id="payment-form">
-             <div className="form-group"> 
-              <img src="https://images-na.ssl-images-amazon.com/images/I/61cL%2BM-SN%2BL._SL1283_.jpg" alt="ckot" width="405.5" height="153.5"/>{" "}
-             </div>
-              <div className="form-group">
-               <span style={{ fontSize: 12, marginLeft: 13 }}>Card Number</span>
-                <div>
-                  <CardNumberElement/>
-                </div>
-               </div>
-            
-             <div className="form-group row">
-               <div
-                 className="form-group "
-                 style={{ paddingLeft: 15, marginTop: 8, width:"33%" }}>
-                  <span style={{ fontSize: 12, marginLeft: 13 }}>Expiration Date</span>
-                  <div>
-                    <CardExpiryElement/>
-                  </div>
-               </div>
- 
-              
- 
-               <div
-                 className="form-group "
-                 style={{ paddingLeft: 30, marginTop: 8, width:"33%" }}
-               >
-                 <span style={{ fontSize: 12, marginLeft: 13 }}>Postal Code</span>
-                 <div>
-                    <PostalCodeElement />
-                 </div>
-               </div>
- 
-       
- 
-               <div
-                 className="form-group"
-                 style={{ marginTop: 8, paddingLeft: 30, width:"33%"}}
-               >
-   <span style={{ fontSize: 12, marginLeft: 13 }}>CVC</span>
-         <div>
-           <CardCVCElement/>
-           </div>
-                
-               </div>  
-             </div>
-        
-             </form>
-           </div>
-         </div>
-       </div>
-     </div>
- 
-    {/*   //////////////Check///////////////////////                          */}
- 
- 
- 
- 
- 
+ <div className="row" style={{marginRight:"0px", marginLeft:"0px",justifyContent:"center",marginTop:"3%"}}>
      <div className="card text-left w-50 " >
        <h5 className="card-header">Payment Summary</h5>
        <div className="card-body">
@@ -609,7 +426,8 @@ else{
            <Button
                color="warning"
                onClick={this.toggle}
-               style={{ marginBottom: "1rem",  width: '90%'}}      
+               style={{ marginBottom: "1rem",  width: '90%'}}    
+               disabled={this.state.rewardPoint<0?false:true}   
              >
                Pay with Reward Points
              </Button>
@@ -662,13 +480,13 @@ else{
      </div>
    );
  }
- 
-
-
 }
 
 
-const CheckoutPaymentCheck = withRouter(injectStripe(_CheckoutPaymentCheck));
+
+
+
+const CheckoutPaymentCheck = withRouter(_CheckoutPaymentCheck);
 ///////////////////////////////////////////////////////////////////////////////////
 
 
