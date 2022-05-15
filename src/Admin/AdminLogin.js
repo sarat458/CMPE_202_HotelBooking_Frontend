@@ -64,6 +64,11 @@ class Registration extends React.Component {
     //     }
     //   })
     }
+    localStorage.setItem("userType","admin");
+    this.props.history.push("/admin")
+    this.setState({
+      modal:false
+    })
   }
 
   pushtoCurrentURL() {
