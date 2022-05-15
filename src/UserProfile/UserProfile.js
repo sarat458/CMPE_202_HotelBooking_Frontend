@@ -128,8 +128,8 @@ class UserProfile extends React.Component {
 													<Row>
 														<Col xs="4"></Col>
 														<Col xs="8">
-															<ProfileEditName />
-															<ProfileEditPassword />
+															<ProfileEditName email={this.state.email}/>
+															<ProfileEditPassword email={this.state.email}/>
 															<br />
 														</Col>
 													</Row>

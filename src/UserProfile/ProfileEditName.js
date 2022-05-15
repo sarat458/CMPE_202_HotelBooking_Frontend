@@ -44,12 +44,13 @@ class ProfileEditName extends React.Component {
 		event.preventDefault()
 		if(this.nameChecker()) {
 			const temp_fields = {
-				name: this.state.fields.name
+				name: this.state.fields.name,
+				email:this.props.email
 			}
 		
 		changeName(temp_fields)
 			.then(res => {
-				// console.log(res.data)
+				console.log("check",res.data)
 			})
 		window.location.reload();
 		}
