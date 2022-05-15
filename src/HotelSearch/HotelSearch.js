@@ -141,15 +141,16 @@ class HotelSearch extends React.Component {
 
 	fetchSearchResult() {
 		const params = new URLSearchParams(this.props.location.search)
-		const queryCall = BACKEND_URL + 'searchHotels'+"/" + params.get("city");
+		const queryCall = BACKEND_URL + '/searchHotels'+"/" + params.get("city");
+		console.log(queryCall);
 
-		
 		const sortBy = params.get("sortBy")
 		if (!sortBy) {
 			this.setState({ sortBy: '' })
 		}
 		this.loadGoogleMap()
 		axios.get(queryCall).then(result => {
+			console.log("check",result);
 			this.setState({
 				hotels: result.data
 			})

@@ -78,24 +78,6 @@ export const loginPost = temp_fields => {
   })
 }
 
-export const adminPost = temp_fields => {
-  return axios.post(BACKEND_URL+'/signIn', {
-    email: temp_fields.email,
-    password: temp_fields.password,
-  }).then(response => {
-    console.log("login result status: " , response)
-    // log-in possible only when server says "S"
-    if (response.data.isAuth==true) {
-      localStorage.setItem('accesstoken',JSON.stringify(response.data))
-      localStorage.setItem('userName',response.data.name)
-      localStorage.setItem('email',response.data.email)
-      localStorage.setItem('rewardPoints',response.data.rewardPoints)
-    }
-    return response.data
-  }).catch(error => {
-    console.log("error message for login: " , error)
-  })
-}
 
 
 export const verifyLogin = () => {
