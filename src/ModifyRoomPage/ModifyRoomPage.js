@@ -190,9 +190,9 @@ class ModifyRoomPage extends React.Component {
 		// roomInfo[1] contains image, capacity, taken_quantity, available_quantity
 		let rooms = []
 		for (const roomInfo of this.state.roomsMap) {
-			if (roomInfo[1].taken_quantity && roomInfo[1].taken_quantity > 0) {
+			// if (roomInfo[1].taken_quantity && roomInfo[1].taken_quantity > 0) {
 				rooms.push({ bed_type: roomInfo[1].bed_type.toString(), price: roomInfo[1].price, quantity: parseInt(roomInfo[1].taken_quantity) })
-			}
+			// }
 		}
 		const oldTotalPrice = this.state.oldTotalPrice.toString()
 		const oldAmountPaid = this.state.oldAmountPaid.toString()
