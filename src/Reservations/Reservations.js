@@ -141,7 +141,7 @@ class Reservations extends React.Component {
 					<Container>
 						<Row>
 							<Col>
-								<div className="reservations-card">
+								<div className="reservations-card" style={{width:"110%",height:"100%"}}>
 									<div className="reservations-card-body reservations-inner-card">
 										<br />
 										<div className="reservations-center-title"> <h2> My Reservations </h2> </div>
@@ -172,7 +172,7 @@ class Reservations extends React.Component {
 		)
 
 		return (
-			<div className="col-lg-12 reservations-container col-auto" style={pageStyle}>
+			<div className="col-lg-12 reservations-container col-auto " style={pageStyle}>
 				{reservationPage}
 			</div>
 		);
