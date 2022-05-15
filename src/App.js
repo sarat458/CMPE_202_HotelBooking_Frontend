@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          {localStorage.getItem('userType')=="admin"?<AdminNav/>:<NavBar/>}
+          <NavBar/>
           <Route exact path="/" component={Home} />
           <Route exact path="/UserProfile" component={UserProfile}/>
           <Route exact path="/Reservations" component={Reservations}/>
@@ -39,7 +39,7 @@ class App extends Component {
           <Route exact path="/Confirmation" component={Confirmation} />
           <Route path="/ModifyRoomPage" component={ModifyRoomPage} />          
           <Route exact path="/CheckoutConfirm" component={CheckoutConfirm} />
-          <Route path="/Admin" component={Admin}/>
+          <Route exact path="/admin" component={Admin}/>
         </div>
       </Router>
 

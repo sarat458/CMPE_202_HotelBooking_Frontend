@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import AdminNav from './AdminNav'
 
 export class Admin extends Component {
   render() {
     return (
-      <div>Admin</div>
+      <>
+        <AdminNav/>
+        <div>Admin</div>
+      </>
     )
   }
 }
