@@ -105,25 +105,25 @@ class Reservations extends React.Component {
 									<td style={{color:"green"}}><strong>${price}</strong></td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
 										<CancelConfirmation bookingId={bookingId} /> </td>
-									<td>{status}</td>
+									<td style={{color:"green"}}><strong>Active</strong></td>
 									<td> <MoreInfo bookingId={bookingId} /> </td>
 								</tr>
 							)
 						} 
-						// else {
-						// 	return (
-						// 		<tr key={index + 22}>
-						// 			<td>{bookingId}</td>
-						// 			<td>{checkinDate}</td>
-						// 			<td>{checkoutDate}</td>
-						// 			<td>{hotelName}</td>
-						// 			<td>${price}</td>
-						// 			<td>       </td>
-						// 			<td>{status}</td>
-						// 			<td> <MoreInfo bookingId={bookingId} /> </td>
-						// 		</tr>
-						// 	)
-						// }
+						else {
+							return (
+								<tr key={index + 22}>
+									<td>{bookingId}</td>
+									<td>{checkinDate.toString().slice(0,10)}</td>
+									<td>{checkoutDate.toString().slice(0,10)}</td>
+									<td>{hotelName}</td>
+									<td style={{color:"red"}}><s>${price}</s></td>
+									<td>       </td>
+									<td style={{color:"red"}}>Cancelled</td>
+									<td> <MoreInfo bookingId={bookingId} /> </td>
+								</tr>
+							)
+						}
 					})
 				}
 			</tbody>

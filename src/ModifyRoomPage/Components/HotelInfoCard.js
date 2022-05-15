@@ -22,7 +22,7 @@ class HotelInfoCard extends React.Component {
             <div className="col-md-12">
               <div className="">
                 <article className="">
-                  <div className="blog-img" style={{ cursor: "pointer", backgroundImage: `url(${imageArray[0]})` }}></div>
+                  <div className="blog-img" style={{ cursor: "pointer", backgroundImage: `url(https://media.istockphoto.com/photos/marriott-walnut-creek-picture-id1067000654?k=20&m=1067000654&s=612x612&w=0&h=dazJ7HWfdBz3c9593B53TS_lMmvgn2ax1HOT7OLiMuk=)` }}></div>
                   <div className="desc">
                     <h2>{this.props.hotelData.name}</h2>
                     <div className="meta">
