@@ -79,11 +79,6 @@ class ModifyRoomPage extends React.Component {
 		const date_in = moment(params.get('date_in'), ('YYYY-MM-DD'))
 		const date_out = moment(params.get('date_out'), ('YYYY-MM-DD'))
 		const reservation_days = date_out.diff(date_in, 'days')
-		const roomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=1111-01-01&date_out=1111-01-02`
-		const realroomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=${this.state.date_in.format('YYYY-MM-DD')}&date_out=${this.state.date_out.format('YYYY-MM-DD')}`
-		const hotelSearchQuery = `/api/search/hotels?date_in=1111-01-01&date_out=1111-01-02&hotel_id=${this.state.hotel_id}`
-		const realhotelSearchQuery = `/api/search/hotels?date_in=${this.state.date_in.format('YYYY-MM-DD')}&date_out=${this.state.date_out.format('YYYY-MM-DD')}&hotel_id=${this.state.hotel_id}`
-		const transactionIDparam = { transaction_id: transaction_id }
 		
 		const roomsFromTransaction = JSON.parse(localStorage.getItem("modifyBooking"));
 		const hotelQuery = BACKEND_URL+`/searchhotelid/`+roomsFromTransaction.rooms[0].hotelId;

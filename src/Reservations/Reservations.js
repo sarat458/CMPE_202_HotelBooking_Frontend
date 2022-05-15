@@ -93,35 +93,37 @@ class Reservations extends React.Component {
 			<tbody>
 				{
 					this.state.reservations.map((reservation, index) => {
+						console.log(reservation);
 						const { bookingId, checkinDate, checkoutDate, hotelName, price, status } = reservation //destructuring
 						if (status === 'Active') {
 							return (
 								<tr key={index + 11}>
 									<td>{bookingId}</td>
-									<td>{checkinDate}</td>
-									<td>{checkoutDate}</td>
+									<td>{checkinDate.toString().slice(0,10)}</td>
+									<td>{checkoutDate.toString().slice(0,10)}</td>
 									<td>{hotelName}</td>
-									<td>${price}</td>
+									<td style={{color:"green"}}><strong>${price}</strong></td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
 										<CancelConfirmation bookingId={bookingId} /> </td>
 									<td>{status}</td>
-									{/* <td> <MoreInfo id={booking_id} /> </td> */}
+									<td> <MoreInfo bookingId={bookingId} /> </td>
 								</tr>
 							)
-						} else {
-							return (
-								<tr key={index + 22}>
-									<td>{bookingId}</td>
-									<td>{checkinDate}</td>
-									<td>{checkoutDate}</td>
-									<td>{hotelName}</td>
-									<td>${price}</td>
-									<td>       </td>
-									<td>{status}</td>
-									{/* <td> <MoreInfo id={booking_id} /> </td> */}
-								</tr>
-							)
-						}
+						} 
+						// else {
+						// 	return (
+						// 		<tr key={index + 22}>
+						// 			<td>{bookingId}</td>
+						// 			<td>{checkinDate}</td>
+						// 			<td>{checkoutDate}</td>
+						// 			<td>{hotelName}</td>
+						// 			<td>${price}</td>
+						// 			<td>       </td>
+						// 			<td>{status}</td>
+						// 			<td> <MoreInfo bookingId={bookingId} /> </td>
+						// 		</tr>
+						// 	)
+						// }
 					})
 				}
 			</tbody>

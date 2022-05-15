@@ -12,6 +12,7 @@ import {
 	Button, CardHeader,
 	Container, Row, Col
 } from 'reactstrap';
+import { parse } from 'dotenv';
 
 var topSectionStyle = {
 	width: "100%",
@@ -75,11 +76,17 @@ class UserProfile extends React.Component {
 		// 			reward: res.data.reward
 		// 		})
 		// 	})
-		this.setState({
+		const userID = JSON.parse(localStorage.getItem("accesstoken")).id
+		axios.get(BACKEND_URL+"/rewardPoints/"+userID)
+			.then((res)=>{
+				this.setState({
 						name: localStorage.getItem('userName'),
 						email: localStorage.getItem('email'),
-						reward: localStorage.getItem('rewardPoints')
+						reward: res.data.rewardPoints
 					})
+			})
+
+		
 	}
 
 	redirectToHome() {
