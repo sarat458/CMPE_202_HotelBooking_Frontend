@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import { Table, Button } from 'reactstrap';
+import { BACKEND_URL } from '../Configuration/config';
 
 
 
@@ -104,14 +105,13 @@ class RoomPage extends React.Component {
 		let data={
 			results:JSON.parse(localStorage.getItem("hotelDetails"))
 		}
-		let roomsData={
-			results:[
-				{bed_type:"Single",price:126.1,capacity:2,quantity:10,desired_quantity:0},
-				{bed_type:"Double",price:196.1,capacity:2,quantity:5,desired_quantity:0},
-				{bed_type:"Suite",price:326.1,capacity:2,quantity:4,desired_quantity:0}
-			]
+		const query = BACKEND_URL+"/roomsavailability/"+this.state.hotel_id+"/"+this.state.date_in+"/"+this.state.date_out;
+		const rooms = (await axios.get(query)).data
+		console.log("Check",rooms);
+		let data1={
+			results:rooms
 		}
-		this.setState({hotel:data,rooms:roomsData});
+		this.setState({hotel:data,rooms:data1});
 	}
 
 	handleEachRoomQuantity = (event) => {

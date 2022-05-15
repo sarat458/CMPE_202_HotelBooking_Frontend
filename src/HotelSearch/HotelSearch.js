@@ -385,7 +385,7 @@ class HotelSearch extends React.Component {
 		const guest_number = params.get('guest_number')
 		const city = params.get('city')
 
-		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel.id}&city=${city}`
+		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel._id}&city=${city}`
 		localStorage.setItem("hotelDetails",JSON.stringify(hotel));
 		this.props.history.push({
 			pathname: `/RoomPage`,
