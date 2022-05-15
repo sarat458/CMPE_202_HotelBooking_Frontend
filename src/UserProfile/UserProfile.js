@@ -80,8 +80,8 @@ class UserProfile extends React.Component {
 		axios.get(BACKEND_URL+"/rewardPoints/"+userID)
 			.then((res)=>{
 				this.setState({
-						name: localStorage.getItem('userName'),
-						email: localStorage.getItem('email'),
+						name: res.data.firstName+" "+res.data.lastName,
+						email: res.data.email,
 						reward: res.data.rewardPoints
 					})
 			})
@@ -93,6 +93,9 @@ class UserProfile extends React.Component {
 		this.props.history.push('/')
 	}
 
+	refreshPage = (name) => {
+		this.setState({name : name});
+	}
 	render() {
 		const profilePage = (
 			<div className="profile-form-container col-lg-12 dark-tint" >
@@ -101,7 +104,7 @@ class UserProfile extends React.Component {
 						<Row>
 							<Col sm="12" md={{ size: 6, offset: 3 }}>
 								<div className="profile-card">
-									<div className="profile-center-title"> Hello {this.state.name}! </div>
+									<div className="profile-center-title"> Hello {this.state.name}!! </div>
 									<br />
 									<div className="profile-card-body profile-inner-card">
 										<Col>
@@ -121,15 +124,15 @@ class UserProfile extends React.Component {
 																<br />
 																<b> Name: </b> {this.state.name}
 																<br />
-																<b> Password: </b> ********
+																{/* <b> Password: </b> ******** */}
 							         							</CardText>
 														</Col>
 													</Row>
 													<Row>
 														<Col xs="4"></Col>
 														<Col xs="8">
-															<ProfileEditName email={this.state.email}/>
-															<ProfileEditPassword email={this.state.email}/>
+															<ProfileEditName email={this.state.email} refresh={this.refreshPage} name={this.state.name}/>
+															{/* <ProfileEditPassword email={this.state.email}/> */}
 															<br />
 														</Col>
 													</Row>

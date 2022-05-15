@@ -22,8 +22,10 @@ export const changePass = (temp_fields) => {
 }
 
 export const changeName = (temp_fields) => {
+  console.log("backend call");
   return axios.post(BACKEND_URL+'/updatedetails', {
-    name: temp_fields.name,
+    firstname: temp_fields.firstname,
+    lastname:temp_fields.lastname,
     email: temp_fields.email
   }).then(response => {
     console.log(response);

@@ -16,7 +16,8 @@ class ProfileEditName extends React.Component {
 		this.state={
 			modal:false,
 			fields: {
-				name: ''
+				firstName: '',
+				lastName:''
 			},
 			errors: {
 			}
@@ -42,9 +43,11 @@ class ProfileEditName extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault()
-		if(this.nameChecker()) {
+		console.log("check");
+		// if(this.nameChecker()) {
 			const temp_fields = {
-				name: this.state.fields.name,
+				firstname: this.state.fields.firstName,
+				lastname:this.state.fields.lastName,
 				email:this.props.email
 			}
 		
@@ -55,26 +58,27 @@ class ProfileEditName extends React.Component {
 			this.setState({
 				modal:false
 			})
-		window.location.reload();
-		}
+			this.props.refresh(temp_fields.firstname+" "+temp_fields.lastname);
+
+		// }
 	}
 
 
-	nameChecker() {
-		let temp_fields = this.state.fields;
-	    let temp_errors = {};
-	    let formIsValid = true;
+	// nameChecker() {
+	// 	let temp_fields = this.state.fields;
+	//     let temp_errors = {};
+	//     let formIsValid = true;
 
-	    if (temp_fields["name"] === '') {
-	      formIsValid = false;
-	      temp_errors["name"] = "*Field was empty";
-	    }
-	    this.setState({
-	      errors: temp_errors
-	    });
-	    return formIsValid;
+	//     if (temp_fields["name"] === '') {
+	//       formIsValid = false;
+	//       temp_errors["name"] = "*Field was empty";
+	//     }
+	//     this.setState({
+	//       errors: temp_errors
+	//     });
+	//     return formIsValid;
 
-	}
+	// }
 
 	render() {
 		return (
@@ -87,9 +91,15 @@ class ProfileEditName extends React.Component {
 			<ModalBody>
 				<Form onSubmit={this.handleSubmit}>
 					<FormGroup>
-						<Label> Name: </Label>
+						<Label> First Name: </Label>
 
-						<Input type="text" name="name" placeholder={this.state.name} value={this.state.fields.name} onChange={this.handleUpdate} required />
+						<Input type="text" name="firstName" placeholder={this.state.firstName} value={this.state.fields.firstName} onChange={this.handleUpdate} required />
+						<div className="text-warning">{this.state.errors.name}</div>
+
+
+						<Label> Last Name: </Label>
+
+						<Input type="text" name="lastName" placeholder={this.state.lastName} value={this.state.fields.lastName} onChange={this.handleUpdate} required />
 						<div className="text-warning">{this.state.errors.name}</div>
 					</FormGroup>
 				</Form>
