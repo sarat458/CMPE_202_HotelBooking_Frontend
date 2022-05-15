@@ -365,7 +365,7 @@ class RoomPage extends React.Component {
 																<td>{eachRoomResult.capacity}</td>
 																<td>${eachRoomResult.price}</td>
 																<td>{eachRoomResult.desired_quantity} </td>
-																<td>$ {(eachRoomResult.desired_quantity * eachRoomResult.price)}</td>
+																<td>$ {(eachRoomResult.desired_quantity * eachRoomResult.price).toFixed(2)}</td>
 															</tr>
 														)
 													}
@@ -390,7 +390,7 @@ class RoomPage extends React.Component {
 												<td> </td>
 												<td> </td>
 												<td><strong> Estimated Total Per Night</strong></td>
-												<td> $ {this.handleRoomPrice()}</td>
+												<td> $ {this.handleRoomPrice().toFixed(2)}</td>
 											</tr>
 
 										</tbody>

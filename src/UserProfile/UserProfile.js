@@ -29,7 +29,7 @@ class UserProfile extends React.Component {
 	state = {
 		name: "",
 		email: "",
-		reward: "",
+		reward: 0,
 		currentDates: "",
 		futureDates: "",
 		rewardsEarned: "",
@@ -147,7 +147,7 @@ class UserProfile extends React.Component {
 												<div className="profile-inner-cardbody">
 													<CardText>
 														<br />
-														Total Points: {this.state.reward}
+														Total Points: {this.state.reward.toFixed(0)}
 														<br />
 														<br />
 														{/* <Button onClick={this.RewardHistory.bind(this)} color="info"> See my reward history  </Button> */}

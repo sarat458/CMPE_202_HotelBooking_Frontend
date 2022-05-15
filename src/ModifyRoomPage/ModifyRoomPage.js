@@ -386,7 +386,7 @@ class ModifyRoomPage extends React.Component {
 								<td> </td>
 								<td> </td>
 								<td style={{ color: '#3b73d3' }}><strong> Estimated Total </strong></td>
-								<td><strong>$ {(this.state.totalPriceWithoutTax*1.10)} </strong></td>
+								<td><strong>$ {(this.state.totalPriceWithoutTax*1.10).toFixed(2)} </strong></td>
 							</tr>
 							<tr>
 								<td> </td>

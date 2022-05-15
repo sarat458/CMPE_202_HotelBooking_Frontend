@@ -102,7 +102,7 @@ class Reservations extends React.Component {
 									<td>{checkinDate.toString().slice(0,10)}</td>
 									<td>{checkoutDate.toString().slice(0,10)}</td>
 									<td>{hotelName}</td>
-									<td style={{color:"green"}}><strong>${price}</strong></td>
+									<td style={{color:"green"}}><strong>${price.toFixed(2)}</strong></td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
 										<CancelConfirmation bookingId={bookingId} /> </td>
 									<td style={{color:"green"}}><strong>Active</strong></td>

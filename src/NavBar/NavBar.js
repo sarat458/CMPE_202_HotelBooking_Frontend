@@ -237,7 +237,7 @@ class NavBar extends React.Component {
           </div>
           {localStorage.accesstoken ? EmptyForm : <div className="">|</div>}
           {localStorage.accesstoken ? EmptyForm : <Registration />}
-          {localStorage.accesstoken ? EmptyForm : <AdminLogin/>}
+          {/* {localStorage.accesstoken ? EmptyForm : <AdminLogin/>} */}
         </div>
 
 
