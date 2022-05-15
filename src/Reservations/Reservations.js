@@ -56,9 +56,9 @@ class Reservations extends React.Component {
 					bookingObj.checkinDate=data[i].checkInDate;
 					bookingObj.checkoutDate=data[i].checkOutDate;
 					bookingObj.price=data[i].amountPaid;
-					bookingObj.bookingId=data[i].bookingId;
+					bookingObj.bookingId=data[i].bookingID;
 					for(let j=i+1;j<data.length;j++){
-						if(data[j].bookingId==data[i].bookingId){
+						if(data[j].bookingID==data[i].bookingID){
 							data[j].used=true;
 							bookingObj.rooms.push(data[j]);
 						}
@@ -77,6 +77,7 @@ class Reservations extends React.Component {
 
 	modifyRoom = (reservation) => (event) => {
 		event.preventDefault()
+		localStorage.setItem("modifyBooking",JSON.stringify(reservation));
 		const info = reservation
 		const queryString = `date_in=${info.checkinDate}&date_out=${info.checkoutDate}
 								&hotel_id=${info.hotelName}&transaction_id=${info.bookingId}`
@@ -102,7 +103,7 @@ class Reservations extends React.Component {
 									<td>{hotelName}</td>
 									<td>${price}</td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
-										<CancelConfirmation id={bookingId} /> </td>
+										<CancelConfirmation bookingId={bookingId} /> </td>
 									<td>{status}</td>
 									{/* <td> <MoreInfo id={booking_id} /> </td> */}
 								</tr>

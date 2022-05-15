@@ -140,7 +140,7 @@ class UserProfile extends React.Component {
 														Total Points: {this.state.reward}
 														<br />
 														<br />
-														<Button onClick={this.RewardHistory.bind(this)} color="info"> See my reward history > </Button>
+														{/* <Button onClick={this.RewardHistory.bind(this)} color="info"> See my reward history  </Button> */}
 														<br />
 														<br />
 													</CardText>

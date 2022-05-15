@@ -100,17 +100,7 @@ class RoomPage extends React.Component {
 	}
 
 	async componentDidMount() {
-		//const roomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=${this.state.date_in}&date_out=${this.state.date_out}`
-		//const hotelSearchQuery = `/api/search/hotels?city=${this.state.city}&date_in=${this.state.date_in}&date_out=${this.state.date_out}&hotel_id=${this.state.hotel_id}`
-
-		//const rooms = (await axios.get(roomSearchQuery)).data
-		// const hotel = (await axios.get(hotelSearchQuery)).data
-		// rooms.results.forEach((eachRoomResult, index) => {
-		// 	rooms.results[index].desired_quantity = 0;
-		// })
-		// this.setState({
-		// 	rooms, hotel
-		// })
+		
 		let data={
 			results:JSON.parse(localStorage.getItem("hotelDetails"))
 		}

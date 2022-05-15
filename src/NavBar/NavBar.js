@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom'
 import Registration from '../Registration/Registration'
 import { logoutClearSession, loginPost, verifyLogin } from '../Utility/ReigstrationLoginFunction'
-import imageLogo from './Images/logo.jpeg'
+import imageLogo from './Images/logoavg.png'
 // import neccessary components
 import {
   Form, FormGroup, Input
@@ -232,8 +232,8 @@ class NavBar extends React.Component {
         {/*LEFT SIDE*/}
         <div className="navbar-left form-inline my-2 my-lg-0" >
           <div className="col-auto pl-0 custom-row" onClick={this.Home.bind(this)}>
-            <img className="imageLogo" src={imageLogo} alt="logologologo"></img>
-            <div>Avengers Group of Hotels</div>
+            <img className="imageLogo mt-2" src={imageLogo} alt="logologologo" style={{width:"40px",height:"40px"}}></img>
+            <div style={{color:"ActiveBorder",fontSize:"30px",fontStyle:"italic"}}><strong>Avengers Group of Hotels</strong></div>
           </div>
           {localStorage.accesstoken ? EmptyForm : <div className="">|</div>}
           {localStorage.accesstoken ? EmptyForm : <Registration />}

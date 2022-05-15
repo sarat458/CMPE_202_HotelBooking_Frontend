@@ -3,8 +3,9 @@ import { BACKEND_URL } from '../Configuration/config'
 
 
 export const cancelTransaction = (temp_fields) => {
-        return axios.post(BACKEND_URL+'/reservations/cancellation', {
-            transaction_id: temp_fields.transaction_id
+        console.log("check",temp_fields.bookingID);
+        return axios.put(BACKEND_URL+'/cancelBooking', {
+            bookingID: temp_fields.bookingID
         }).then(response => {
         if(response.status === 200) {
         }

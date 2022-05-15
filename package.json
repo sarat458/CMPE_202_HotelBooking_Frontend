@@ -19,7 +19,8 @@
     "react-select": "^2.4.4",
     "react-stripe-elements": "^2.0.3",
     "reactstrap": "^7.1.0",
-    "stripe": "^6.36.0"
+    "stripe": "^6.36.0",
+    "uuidv4": "^6.2.13"
   },
   "scripts": {
     "start": "react-scripts start",

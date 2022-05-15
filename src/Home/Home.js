@@ -236,11 +236,11 @@ class Home extends React.Component {
 				<div className="col-lg-12 home-container col-auto" style={topSectionStyle}>
 					<div className="home-form-container col-lg-12">
 						<Form className="home-form col-lg-12" onSubmit={this.search}>
-							<FormGroup>
+							<FormGroup className="mt-5 p-4">
 								<div className="col-lg-12 custom-row">
 									<div className="col-lg-6 top-header ml-lg-5 ">
 										{/* <div className="h4">Welcome {!this.state.userName?'':this.state.userName}</div> */}
-										<div className="h4">Welcome</div>
+										{/* <div className="h4" style={{fontStyle:"italic"}}> {this.state.userName?<strong>Welcome {this.state.userName}</strong>:<></>}</div> */}
 					  				</div>
 				  				</div>
 
@@ -250,14 +250,14 @@ class Home extends React.Component {
 				  				    <div className="block-32">
 				  				        <div className="row">
 				  				          <div className="col-md-6 mb-3 mb-lg-0 col-lg-4" >
-				  				            <label className="input-labels">Location</label>
+				  				            <label className="input-labels"><strong>Location</strong></label>
 				  				            <div className="field-icon-wrap">
 				  				              <div className="icon"><i className="fa fa-search"></i></div>
 				  				            		<Autocomplete onPlaceChanged={this.showPlaceDetails.bind(this)}/>
 				  				            </div>
 				  				          </div>
 				  				          <div className="col-md-6 mb-3 mb-lg-0 col-lg-4">
-				  				            <label className="input-labels">Check In &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      Check Out</label>
+				  				            <label className="input-labels"><strong>Check In</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      <strong>Check Out</strong></label>
 				  				            <div className="field-icon-wrap check-wrap">
 				  				              <div className="icon"><i className="fa fa-calendar"></i></div>
 				  				              <DateRangePicker
@@ -275,7 +275,7 @@ class Home extends React.Component {
 				  				          </div>
 				  				          <div className="col-md-6 mb-3 mb-md-0 col-lg-2">
 				  				            <div className="row">
-				  				                <label className="input-labels">Guests</label>
+				  				                <label className="input-labels"><strong>Guests</strong></label>
 				  				                  	<div className="icon"><span className="ion-ios-arrow-down"></span></div>
 				  				                  	<div className={this.state.guest_number === 0 ? "home-guest-dropdown col-lg-12 menu-box menu-item" : "home-guest-dropdown-filled col-lg-12 menu-box menu-item" }> {this.state.guest_number === 0 ? null : this.state.guest_number}&nbsp;guests
 															<ul className="home-guest-dropdown-list-style">
@@ -317,7 +317,7 @@ class Home extends React.Component {
 
 				  				          </div>
 				  				        </div>
-													<div className="input-labels-guide">Try "San Jose" or "San Fransisco"</div>
+													<div className="input-labels-guide"><p><strong>Try "San Jose" OR "San Fransisco"</strong></p></div>
 				  				    </div>
 				  				    <div className="col-lg-12">
 										<div className="form-checkboxes row home-checkboxes text-center">
@@ -338,7 +338,6 @@ class Home extends React.Component {
 		return (
 			<div>
 				{homeHeader}
-
 			</div>
 		);
 	}

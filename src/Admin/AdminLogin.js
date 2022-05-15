@@ -23,7 +23,7 @@ class Registration extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.updateFields = this.updateFields.bind(this);
-    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
   }
 
   updateFields(event) {
@@ -43,7 +43,7 @@ class Registration extends React.Component {
   }
 
   // when clicking register
-  register = (event) => {
+  login = (event) => {
     // console.log('Register clicked')
     event.preventDefault()
     // if (this.validate()) {
@@ -102,7 +102,7 @@ class Registration extends React.Component {
           </ModalBody>
 
           <ModalFooter>
-            <Button color="primary" onClick={this.register}>Login</Button>
+            <Button color="primary" onClick={this.login}>Login</Button>
             <Button color="secondary" onClick={this.toggle}>Close</Button>
           </ModalFooter>
 

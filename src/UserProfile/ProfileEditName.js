@@ -16,7 +16,6 @@ class ProfileEditName extends React.Component {
 		this.state={
 			modal:false,
 			fields: {
-
 				name: ''
 			},
 			errors: {

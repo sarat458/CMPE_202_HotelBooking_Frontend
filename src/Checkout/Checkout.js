@@ -3,6 +3,8 @@ import { Button, Collapse } from "reactstrap";
 //import NavBar from "./../NavBar/NavBar";
 import "./../App.css";
 import { withRouter } from 'react-router-dom'
+import { v4 as uuid } from 'uuid';
+
 
 import axios from 'axios'
 //import './../AppSC.css';
@@ -12,6 +14,7 @@ import axios from 'axios'
 ////////Payment////
 
 import NumberFormat from 'react-number-format';
+import { BACKEND_URL } from "../Configuration/config";
 
 // URL EXAMPLE
 //?date_in=2019-05-15&date_out=2019-05-17&guest_number=2&hotel_id=41&city=Las%2520Vegas&country=United%20States%20of%20America&state=Nevada&address=600%20E%20Fremont%20St&hotelname=El%20Cortez%20Hotel%20and%20Casino&rooms=%7B%22results%22:%5B%7B%22hotel_id%22:41,%22bed_type%22:%22King%22,%22price%22:40,%22capacity%22:2,%22images%22:%22https://www.plazahotelcasino.com/wp-content/uploads/2014/11/DeluxeKing-GalleryPhotos-1-1024x512.jpg%22,%22quantity%22:1,%22room_ids%22:%2291%22,%22desired_quantity%22:%221%22%7D,%7B%22hotel_id%22:41,%22bed_type%22:%22Queen%22,%22price%22:40,%22capacity%22:2,%22images%22:%22https://www.plazahotelcasino.com/wp-content/uploads/2019/02/DeluxeQueen-GalleryPhotos-2-1024x512.jpg%22,%22quantity%22:1,%22room_ids%22:%2292%22,%22desired_quantity%22:0%7D%5D,%22totalResultCount%22:2%7D
@@ -178,6 +181,7 @@ else{
                 transaction_id={this.state.transaction_id}
                 cancellation_charge={this.state.cancellation_charge}
                 nights_stayed={this.state.nights_stayed}
+                name={this.state.hotel}
                 />
             </div>
           </div>
@@ -238,7 +242,7 @@ class _CheckoutPaymentCheck extends React.Component
  
      //Payment
      this.state = {
-       complete: false,
+      complete: false,
       tax: this.props.totalPrice*0.10,
       totalPriceBeforeTaxAndRewards: this.props.totalPrice*1.10,
       tempTotal: this.props.totalPrice *1.10,
@@ -256,9 +260,8 @@ class _CheckoutPaymentCheck extends React.Component
       transaction_id:this.props.transaction_id,
       cancellation_charge:this.props.cancellation_charge,
       nights_stayed:this.props.nights_stayed,
-
       checkBookings:false,
-
+      name:this.props.hotel
     };
      this.submit = this.submit.bind(this);
 
@@ -333,20 +336,45 @@ class _CheckoutPaymentCheck extends React.Component
      this.setState({[name]: event.target.value});
    }
 
-  
- 
 async submit(ev) {
-  this.props.history.push(`/Confirmation`);
+  const bookingID = uuid();
+  const rooms = this.state.rooms
+  const bookings = []
+  var flag = false;
+  for(let i=0;i<rooms.length;i++){
+    if(rooms.desired_quantity==0) continue
+    const bookingDetails = {
+      userId:JSON.parse(localStorage.getItem('accesstoken')).id,
+      hotelId:JSON.parse(localStorage.getItem('hotelDetails'))._id,
+      name:JSON.parse(localStorage.getItem('hotelDetails')).name,
+      checkInDate:this.state.date_in,
+      checkOutDate:this.state.date_out,
+      roomPrice:rooms[i].price,
+      roomType:rooms[i].bed_type,
+      roomCount:rooms[i].desired_quantity,
+      amountPaid:this.props.totalPrice,
+      bookingStatus:"Active",
+      bookingID:bookingID
+    }
+    console.log(bookingDetails);
+    await axios.post(BACKEND_URL+"/createBooking",bookingDetails)
+                .then((res)=>{
+                  console.log(res);
+                  flag = true;
+                })
+                .catch((err)=>{
+                  console.log(err);
+                  flag = false;
+                })        
+  }
+  if(flag){
+    this.props.history.push(`/Confirmation`);
+  }
 }
-
-
-
-
- 
-   
    render(){
 
     // console.log("rewardpoint:"+this.state.rewardPoint) 
+    console.log("check here",this.state);
 
     //  const error= validateRP(this.state.rewardPoint,this.state.discount);
     //  const isEnabled = !error;

@@ -8,7 +8,7 @@ export const logoutClearSession = () => {
     })
 }
 export const changePass = (temp_fields) => {
-  return axios.post(BACKEND_URL+'/UserProfileChangePass', {
+  return axios.post(BACKEND_URL+'/updatedetails', {
     oldpass: temp_fields.oldpass,
     newpass: temp_fields.newpass,
   }).then(response => {
@@ -22,7 +22,7 @@ export const changePass = (temp_fields) => {
 }
 
 export const changeName = (temp_fields) => {
-  return axios.post(BACKEND_URL+'/changeName', {
+  return axios.post(BACKEND_URL+'/updatedetails', {
     name: temp_fields.name
   }).then(response => {
     if (response.status === 200) {
