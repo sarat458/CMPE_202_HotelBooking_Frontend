@@ -50,7 +50,10 @@ class ProfileEditName extends React.Component {
 		
 		changeName(temp_fields)
 			.then(res => {
-				console.log("check",res.data)
+				
+			})
+			this.setState({
+				modal:false
 			})
 		window.location.reload();
 		}

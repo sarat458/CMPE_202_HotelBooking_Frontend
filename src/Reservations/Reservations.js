@@ -81,7 +81,7 @@ class Reservations extends React.Component {
 		const info = reservation
 		const queryString = `date_in=${info.checkinDate}&date_out=${info.checkoutDate}
 								&hotel_id=${info.hotelName}&transaction_id=${info.bookingId}`
-
+		localStorage.setItem("transId",info.bookingId);
 		this.props.history.push({
 			pathname: `/ModifyRoomPage`,
 			search: `?${queryString}`,

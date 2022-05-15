@@ -337,6 +337,29 @@ class _CheckoutPaymentCheck extends React.Component
    }
 
 async submit(ev) {
+  if(this.state.transaction_id!==undefined){
+    console.log("chdc",this.state.transaction_id);
+    let obj = {
+      rooms : this.state.rooms,
+      userId:JSON.parse(localStorage.getItem('accesstoken')).id,
+      hotelId:JSON.parse(localStorage.getItem('hotelDetails'))._id,
+      name:JSON.parse(localStorage.getItem('hotelDetails')).name,
+      checkInDate:this.state.date_in,
+      checkOutDate:this.state.date_out,
+      amountPaid:this.props.totalPrice,
+      bookingID : localStorage.getItem("transId")
+    }
+    console.log(obj);
+    axios.post(BACKEND_URL+'/updatebooking',obj)
+    .then( res => {
+      this.props.history.push(`/Confirmation`);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    return;
+  }
+
   const bookingID = uuid();
   const rooms = this.state.rooms
   const bookings = []
