@@ -78,6 +78,13 @@ class Reservations extends React.Component {
 	modifyRoom = (reservation) => (event) => {
 		event.preventDefault()
 		localStorage.setItem("modifyBooking",JSON.stringify(reservation));
+		const hotel = {
+			_id : reservation.rooms[0].hotelId
+		}
+		localStorage.setItem("hotelDetails",JSON.stringify(hotel));
+
+		console.log(reservation);
+
 		const info = reservation
 		const queryString = `date_in=${info.checkinDate}&date_out=${info.checkoutDate}
 								&hotel_id=${info.hotelName}&transaction_id=${info.bookingId}`
