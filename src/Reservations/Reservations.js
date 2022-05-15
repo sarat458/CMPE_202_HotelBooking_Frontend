@@ -104,7 +104,7 @@ class Reservations extends React.Component {
 									<td>{hotelName}</td>
 									<td style={{color:"green"}}><strong>${price.toFixed(2)}</strong></td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
-										<CancelConfirmation bookingId={bookingId} /> </td>
+										<CancelConfirmation bookingId={bookingId} price={price.toFixed(2)}/> </td>
 									<td style={{color:"green"}}><strong>Active</strong></td>
 									<td> <MoreInfo bookingId={bookingId} /> </td>
 								</tr>

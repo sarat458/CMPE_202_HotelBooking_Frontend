@@ -278,9 +278,19 @@ class _CheckoutPaymentCheck extends React.Component
       
     //   // console.log("resReward "+JSON.stringify(res.data.reward));
     // })
-    this.setState({
-      rewardPoint: localStorage.getItem('rewardPoints')
-    })
+    const userId = JSON.parse(localStorage.getItem("accesstoken")).id
+    axios.get(BACKEND_URL+"/rewardPoints/"+userId)
+        .then((res)=>{
+          console.log(res);
+          console.log("points",res.data.rewardPoints);
+          this.setState({
+            rewardPoint: res.data.rewardPoints.toFixed(0)
+          })
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
+    
         
   }
 
@@ -352,7 +362,10 @@ async submit(ev) {
     console.log(obj);
     axios.post(BACKEND_URL+'/updatebooking',obj)
     .then( res => {
+      //discount
+      console.log(res);
       this.props.history.push(`/Confirmation`);
+
     })
     .catch(err => {
       console.log(err);
@@ -367,7 +380,9 @@ async submit(ev) {
   for(let i=0;i<rooms.length;i++){
     if(rooms.desired_quantity==0) continue
     const bookingDetails = {
+      // userId:JSON.parse(localStorage.getItem('accesstoken')).id,
       userId:JSON.parse(localStorage.getItem('accesstoken')).id,
+
       hotelId:JSON.parse(localStorage.getItem('hotelDetails'))._id,
       name:JSON.parse(localStorage.getItem('hotelDetails')).name,
       checkInDate:this.state.date_in,
@@ -391,7 +406,22 @@ async submit(ev) {
                 })        
   }
   if(flag){
-    this.props.history.push(`/Confirmation`);
+    if(this.state.discount>0){
+      const userId = JSON.parse(localStorage.getItem("accesstoken")).id
+      const rewards = this.state.discount;
+      console.log(userId,rewards);
+      axios.put(BACKEND_URL+"/updateRewardPoints/"+userId+"/"+rewards)
+            .then((res)=>{
+              console.log(res);
+              this.props.history.push(`/Confirmation`);
+            })
+            .catch((err)=>{
+              console.log(err);
+            })
+    }else{
+      this.props.history.push(`/Confirmation`);
+
+    }
   }
 }
    render(){

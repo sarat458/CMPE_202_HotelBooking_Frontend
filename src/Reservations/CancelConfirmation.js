@@ -47,6 +47,15 @@ class CancelConfirmation extends React.Component {
 			console.log(response);
 			if (response.status === 200) {
 				      window.location.reload();
+					  const userId = JSON.parse(localStorage.getItem("accesstoken")).id
+					  const rewards = this.props.price
+					  axios.put(BACKEND_URL+"/updateRewardPoints/"+userId+"/"+rewards)
+					  		.then((res)=>{
+								  console.log(res);
+							  })
+							  .catch((err)=>{
+								  console.log(err);
+							  })
 				    } else if (response.status === 400) {
 				    }
     }).catch(error => {

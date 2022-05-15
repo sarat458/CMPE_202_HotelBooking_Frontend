@@ -50,7 +50,7 @@ export const registerPost = temp_fields => {
   console.log("payload",payLoad);
   return axios.post(BACKEND_URL+'/signup', payLoad).then(response => {
     if (response.status === 200) {
-      localStorage.setItem('accesstoken', response.data)
+      localStorage.setItem('accesstoken', JSON.stringify(response.data))
       localStorage.setItem('userName',response.data.name)
       localStorage.setItem('email',response.data.email)
       localStorage.setItem('rewardPoints',response.data.rewardPoints)
