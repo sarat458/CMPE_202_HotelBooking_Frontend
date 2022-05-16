@@ -14,18 +14,18 @@ import Recoverage from './Recoverage/Recoverage';
 import Accesscode from './Recoverage/Accesscode';
 import Confirmation from './Confirmation/Confirmation';
 import ModifyRoomPage from './ModifyRoomPage/ModifyRoomPage';
-import Admin from './Admin/Admin'
+
 //remove CheckoutConfirm Later
 import CheckoutConfirm from './Checkout/Checkout - Confirmation'
 import './App.css';
-import AdminNav from './Admin/AdminNav';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
-          {localStorage.getItem('userType')=="admin"?<AdminNav/>:<NavBar/>}
+          <NavBar/>
+          {/* {localStorage.getItem('userType')==="admin"?<AdminNav/>:<NavBar/>} */}
           <Route exact path="/" component={Home} />
           <Route exact path="/UserProfile" component={UserProfile}/>
           <Route exact path="/Reservations" component={Reservations}/>
@@ -39,7 +39,7 @@ class App extends Component {
           <Route exact path="/Confirmation" component={Confirmation} />
           <Route path="/ModifyRoomPage" component={ModifyRoomPage} />          
           <Route exact path="/CheckoutConfirm" component={CheckoutConfirm} />
-          <Route path="/Admin" component={Admin}/>
+          {/* <Route exact path="/admin" component={Admin}/> */}
         </div>
       </Router>
 

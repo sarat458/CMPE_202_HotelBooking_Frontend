@@ -12,6 +12,7 @@ import {
 	Button, CardHeader,
 	Container, Row, Col
 } from 'reactstrap';
+import { parse } from 'dotenv';
 
 var topSectionStyle = {
 	width: "100%",
@@ -28,7 +29,7 @@ class UserProfile extends React.Component {
 	state = {
 		name: "",
 		email: "",
-		reward: "",
+		reward: 0,
 		currentDates: "",
 		futureDates: "",
 		rewardsEarned: "",
@@ -75,17 +76,26 @@ class UserProfile extends React.Component {
 		// 			reward: res.data.reward
 		// 		})
 		// 	})
-		this.setState({
-						name: localStorage.getItem('userName'),
-						email: localStorage.getItem('email'),
-						reward: localStorage.getItem('rewardPoints')
+		const userID = JSON.parse(localStorage.getItem("accesstoken")).id
+		axios.get(BACKEND_URL+"/rewardPoints/"+userID)
+			.then((res)=>{
+				this.setState({
+						name: res.data.firstName+" "+res.data.lastName,
+						email: res.data.email,
+						reward: res.data.rewardPoints
 					})
+			})
+
+		
 	}
 
 	redirectToHome() {
 		this.props.history.push('/')
 	}
 
+	refreshPage = (name) => {
+		this.setState({name : name});
+	}
 	render() {
 		const profilePage = (
 			<div className="profile-form-container col-lg-12 dark-tint" >
@@ -94,7 +104,7 @@ class UserProfile extends React.Component {
 						<Row>
 							<Col sm="12" md={{ size: 6, offset: 3 }}>
 								<div className="profile-card">
-									<div className="profile-center-title"> Hello {this.state.name}! </div>
+									<div className="profile-center-title"> Hello {this.state.name}!! </div>
 									<br />
 									<div className="profile-card-body profile-inner-card">
 										<Col>
@@ -114,15 +124,15 @@ class UserProfile extends React.Component {
 																<br />
 																<b> Name: </b> {this.state.name}
 																<br />
-																<b> Password: </b> ********
+																{/* <b> Password: </b> ******** */}
 							         							</CardText>
 														</Col>
 													</Row>
 													<Row>
 														<Col xs="4"></Col>
 														<Col xs="8">
-															<ProfileEditName />
-															<ProfileEditPassword />
+															<ProfileEditName email={this.state.email} refresh={this.refreshPage} name={this.state.name}/>
+															{/* <ProfileEditPassword email={this.state.email}/> */}
 															<br />
 														</Col>
 													</Row>
@@ -137,10 +147,10 @@ class UserProfile extends React.Component {
 												<div className="profile-inner-cardbody">
 													<CardText>
 														<br />
-														Total Points: {this.state.reward}
+														Total Points: {this.state.reward.toFixed(0)}
 														<br />
 														<br />
-														<Button onClick={this.RewardHistory.bind(this)} color="info"> See my reward history > </Button>
+														{/* <Button onClick={this.RewardHistory.bind(this)} color="info"> See my reward history  </Button> */}
 														<br />
 														<br />
 													</CardText>

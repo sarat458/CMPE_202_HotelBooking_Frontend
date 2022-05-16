@@ -143,13 +143,13 @@ class HotelSearch extends React.Component {
 		const params = new URLSearchParams(this.props.location.search)
 		const queryCall = BACKEND_URL + '/searchHotels'+"/" + params.get("city");
 
-		
 		const sortBy = params.get("sortBy")
 		if (!sortBy) {
 			this.setState({ sortBy: '' })
 		}
 		this.loadGoogleMap()
 		axios.get(queryCall).then(result => {
+			console.log("check",result);
 			this.setState({
 				hotels: result.data
 			})
@@ -383,7 +383,6 @@ class HotelSearch extends React.Component {
 		const date_out = params.get('date_out')
 		const guest_number = params.get('guest_number')
 		const city = params.get('city')
-		console.log("hotel",hotel);
 		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel._id}&city=${city}`
 		localStorage.setItem("hotelDetails",JSON.stringify(hotel));
 		this.props.history.push({
@@ -526,7 +525,7 @@ class HotelSearch extends React.Component {
 						<AmenityFilterDropdown value={this.state.selectedOption} handleFilterDropdown={this.handleFilterDropdown} />
 					</div>
 					<div className="col-lg-1 home-submit-button-container">
-						<button onClick={this.getHotelSearchResult} className="p-2 submit-button btn btn-danger my-2 my-sm-0" type="submit">Search</button>
+						<button onClick={this.getHotelSearchResult} className="p-2 submit-button btn btn-success my-2 my-sm-0" type="submit">Search</button>
 					</div>
 				</FormGroup>
 				<hr className="hotel-search-hr-bottom"></hr>
@@ -565,11 +564,11 @@ class HotelSearch extends React.Component {
 								<td id={eachHotelResult.id} className="">
 									<div>
 										<div id={eachHotelResult.id} className="hotel-search-item-row hotel-search-item-header">
-											<div className="hotel-search-item-number">{index + 1}.</div>
+											<div className="hotel-search-item-number" style={{fontSize:"20px"}}>{index + 1}.</div>
 											<div className="hotel-search-item-name"> {/* Hotel Name */} </div>
-											<a href=" " className="col-lg-10 hotel-search-item-name">{eachHotelResult.name}</a>
+											<a href=" " className="col-lg-10 hotel-search-item-name" style={{fontSize:"20px"}}>{eachHotelResult.name}</a>
 										</div>
-										<div id={eachHotelResult.id} className="hotel-search-item-row hotel-search-item-rating">
+										<div id={eachHotelResult.id} className="hotel-search-item-row hotel-search-item-rating mx-auto" style={{fontSize:"10px"}}>
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>
 											<span className="fa fa-star hotel-search-item-rating-checked"></span>

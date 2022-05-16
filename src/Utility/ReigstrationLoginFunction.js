@@ -8,7 +8,7 @@ export const logoutClearSession = () => {
     })
 }
 export const changePass = (temp_fields) => {
-  return axios.post(BACKEND_URL+'/UserProfileChangePass', {
+  return axios.post(BACKEND_URL+'/updatedetails', {
     oldpass: temp_fields.oldpass,
     newpass: temp_fields.newpass,
   }).then(response => {
@@ -22,9 +22,13 @@ export const changePass = (temp_fields) => {
 }
 
 export const changeName = (temp_fields) => {
-  return axios.post(BACKEND_URL+'/changeName', {
-    name: temp_fields.name
+  console.log("backend call");
+  return axios.post(BACKEND_URL+'/updatedetails', {
+    firstname: temp_fields.firstname,
+    lastname:temp_fields.lastname,
+    email: temp_fields.email
   }).then(response => {
+    console.log(response);
     if (response.status === 200) {
     }
     return response.status
@@ -46,7 +50,7 @@ export const registerPost = temp_fields => {
   console.log("payload",payLoad);
   return axios.post(BACKEND_URL+'/signup', payLoad).then(response => {
     if (response.status === 200) {
-      localStorage.setItem('accesstoken', response.data)
+      localStorage.setItem('accesstoken', JSON.stringify(response.data))
       localStorage.setItem('userName',response.data.name)
       localStorage.setItem('email',response.data.email)
       localStorage.setItem('rewardPoints',response.data.rewardPoints)
@@ -77,6 +81,8 @@ export const loginPost = temp_fields => {
     console.log("error message for login: " , error)
   })
 }
+
+
 
 export const verifyLogin = () => {
   return axios.get(BACKEND_URL+'/verifyuser')

@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 import {
 	Button, Modal, ModalHeader,
 	ModalBody, ModalFooter
 } from 'reactstrap'
+import { BACKEND_URL } from '../Configuration/config';
 
 import {cancelTransaction} from '../Utility/CancelButton'
 import "./Reservations.css";
@@ -31,16 +33,35 @@ class CancelConfirmation extends React.Component {
 	    // console.log('Register clicked')
 	    event.preventDefault()
 	    // console.log(event.target.value)
-	      	const temp_fields = {
-	      	transaction_id: event.target.value,
-	      }
 	    //   cancelTransaction(temp_fields).then(response => {
-	    //   	// console.log(response)
+	    //   	console.log(response)
 	    //     if (response === 200) {
 	    //       window.location.reload();
 	    //     } else if (response === 400) {
 	    //     }
 	    //   })
+		console.log(this.props.bookingId);
+		 axios.put(BACKEND_URL+'/cancelBooking', {
+            bookingID: this.props.bookingId
+        }).then(response => {
+			console.log(response);
+			if (response.status === 200) {
+				      window.location.reload();
+					  const userId = JSON.parse(localStorage.getItem("accesstoken")).id
+					  const rewards = this.props.price
+					  axios.put(BACKEND_URL+"/updateRewardPoints/"+userId+"/"+rewards)
+					  		.then((res)=>{
+								  console.log(res);
+							  })
+							  .catch((err)=>{
+								  console.log(err);
+							  })
+				    } else if (response.status === 400) {
+				    }
+    }).catch(error => {
+        //console.log(error.response.status)
+        return error.response.status
+    })
 	    
   	}
 

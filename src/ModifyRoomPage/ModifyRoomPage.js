@@ -76,15 +76,9 @@ class ModifyRoomPage extends React.Component {
 	async fetchSearchResult() {
 		const params = new URLSearchParams(this.props.location.search);
 		const transaction_id = parseInt(params.get('transaction_id'))
-		console.log("id check" , transaction_id);
 		const date_in = moment(params.get('date_in'), ('YYYY-MM-DD'))
 		const date_out = moment(params.get('date_out'), ('YYYY-MM-DD'))
 		const reservation_days = date_out.diff(date_in, 'days')
-		const roomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=1111-01-01&date_out=1111-01-02`
-		const realroomSearchQuery = `/api/search/hotels/${this.state.hotel_id}/?date_in=${this.state.date_in.format('YYYY-MM-DD')}&date_out=${this.state.date_out.format('YYYY-MM-DD')}`
-		const hotelSearchQuery = `/api/search/hotels?date_in=1111-01-01&date_out=1111-01-02&hotel_id=${this.state.hotel_id}`
-		const realhotelSearchQuery = `/api/search/hotels?date_in=${this.state.date_in.format('YYYY-MM-DD')}&date_out=${this.state.date_out.format('YYYY-MM-DD')}&hotel_id=${this.state.hotel_id}`
-		const transactionIDparam = { transaction_id: transaction_id }
 		
 		const roomsFromTransaction = JSON.parse(localStorage.getItem("modifyBooking"));
 		const hotelQuery = BACKEND_URL+`/searchhotelid/`+roomsFromTransaction.rooms[0].hotelId;
@@ -196,8 +190,9 @@ class ModifyRoomPage extends React.Component {
 		// roomInfo[1] contains image, capacity, taken_quantity, available_quantity
 		let rooms = []
 		for (const roomInfo of this.state.roomsMap) {
-			rooms.push({ bed_type: roomInfo[1].bed_type.toString(), price: roomInfo[1].price, quantity: parseInt(roomInfo[1].taken_quantity) })
-			
+			// if (roomInfo[1].taken_quantity && roomInfo[1].taken_quantity > 0) {
+				rooms.push({ bed_type: roomInfo[1].bed_type.toString(), price: roomInfo[1].price, quantity: parseInt(roomInfo[1].taken_quantity) })
+			// }
 		}
 		const oldTotalPrice = this.state.oldTotalPrice.toString()
 		const oldAmountPaid = this.state.oldAmountPaid.toString()
@@ -391,7 +386,7 @@ class ModifyRoomPage extends React.Component {
 								<td> </td>
 								<td> </td>
 								<td style={{ color: '#3b73d3' }}><strong> Estimated Total </strong></td>
-								<td><strong>$ {(this.state.totalPriceWithoutTax*1.10)} </strong></td>
+								<td><strong>$ {(this.state.totalPriceWithoutTax*1.10).toFixed(2)} </strong></td>
 							</tr>
 							<tr>
 								<td> </td>

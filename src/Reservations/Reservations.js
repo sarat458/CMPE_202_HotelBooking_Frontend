@@ -93,32 +93,34 @@ class Reservations extends React.Component {
 			<tbody>
 				{
 					this.state.reservations.map((reservation, index) => {
+						console.log(reservation);
 						const { bookingId, checkinDate, checkoutDate, hotelName, price, status } = reservation //destructuring
 						if (status === 'Active') {
 							return (
 								<tr key={index + 11}>
 									<td>{bookingId}</td>
-									<td>{checkinDate}</td>
-									<td>{checkoutDate}</td>
+									<td>{checkinDate.toString().slice(0,10)}</td>
+									<td>{checkoutDate.toString().slice(0,10)}</td>
 									<td>{hotelName}</td>
-									<td>${price}</td>
+									<td style={{color:"green"}}><strong>${price.toFixed(2)}</strong></td>
 									<td> <Button className="reservations-button" color="warning" value={reservation} onClick={this.modifyRoom(reservation)} > Modify </Button>
-										<CancelConfirmation id={bookingId} /> </td>
-									<td>{status}</td>
-									{/* <td> <MoreInfo id={booking_id} /> </td> */}
+										<CancelConfirmation bookingId={bookingId} price={price.toFixed(2)}/> </td>
+									<td style={{color:"green"}}><strong>Active</strong></td>
+									<td> <MoreInfo bookingId={bookingId} /> </td>
 								</tr>
 							)
-						} else {
+						} 
+						else {
 							return (
 								<tr key={index + 22}>
 									<td>{bookingId}</td>
-									<td>{checkinDate}</td>
-									<td>{checkoutDate}</td>
+									<td>{checkinDate.toString().slice(0,10)}</td>
+									<td>{checkoutDate.toString().slice(0,10)}</td>
 									<td>{hotelName}</td>
-									<td>${price}</td>
+									<td style={{color:"red"}}><s>${price}</s></td>
 									<td>       </td>
-									<td>{status}</td>
-									{/* <td> <MoreInfo id={booking_id} /> </td> */}
+									<td style={{color:"red"}}>Cancelled</td>
+									<td> <MoreInfo bookingId={bookingId} /> </td>
 								</tr>
 							)
 						}
@@ -139,7 +141,7 @@ class Reservations extends React.Component {
 					<Container>
 						<Row>
 							<Col>
-								<div className="reservations-card">
+								<div className="reservations-card" style={{width:"110%",height:"100%"}}>
 									<div className="reservations-card-body reservations-inner-card">
 										<br />
 										<div className="reservations-center-title"> <h2> My Reservations </h2> </div>
@@ -170,7 +172,7 @@ class Reservations extends React.Component {
 		)
 
 		return (
-			<div className="col-lg-12 reservations-container col-auto" style={pageStyle}>
+			<div className="col-lg-12 reservations-container col-auto " style={pageStyle}>
 				{reservationPage}
 			</div>
 		);
