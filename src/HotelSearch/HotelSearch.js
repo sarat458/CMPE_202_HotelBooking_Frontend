@@ -141,7 +141,7 @@ class HotelSearch extends React.Component {
 
 	fetchSearchResult() {
 		const params = new URLSearchParams(this.props.location.search)
-		const queryCall = BACKEND_URL + 'searchHotels'+"/" + params.get("city");
+		const queryCall = BACKEND_URL + '/searchHotels'+"/" + params.get("city");
 
 		
 		const sortBy = params.get("sortBy")
@@ -383,8 +383,8 @@ class HotelSearch extends React.Component {
 		const date_out = params.get('date_out')
 		const guest_number = params.get('guest_number')
 		const city = params.get('city')
-
-		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel.id}&city=${city}`
+		console.log("hotel",hotel);
+		const queryString = `?date_in=${date_in}&date_out=${date_out}&guest_number=${guest_number}&hotel_id=${hotel._id}&city=${city}`
 		localStorage.setItem("hotelDetails",JSON.stringify(hotel));
 		this.props.history.push({
 			pathname: `/RoomPage`,
