@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom'
 
 import axios from 'axios'
 //import './../AppSC.css';
-
+import {BACKEND_URL} from '../Configuration/config'
+import { v4 as uuid } from 'uuid';
 
 
 ////////Payment////
@@ -178,6 +179,7 @@ else{
                 transaction_id={this.state.transaction_id}
                 cancellation_charge={this.state.cancellation_charge}
                 nights_stayed={this.state.nights_stayed}
+                hotel = {this.state.hotel}
                 />
             </div>
           </div>
@@ -336,7 +338,61 @@ class _CheckoutPaymentCheck extends React.Component
   
  
 async submit(ev) {
-  this.props.history.push(`/Confirmation`);
+  if(this.state.transaction_id!==undefined){
+    console.log("chdc",this.state.transaction_id);
+    let obj = {
+      rooms : this.state.rooms,
+      userId:JSON.parse(localStorage.getItem('accesstoken')).id,
+      hotelId:JSON.parse(localStorage.getItem('hotelDetails'))._id,
+      name:JSON.parse(localStorage.getItem('hotelDetails')).name,
+      checkInDate:this.state.date_in,
+      checkOutDate:this.state.date_out,
+      amountPaid:this.props.totalPrice,
+      bookingID : localStorage.getItem("transId")
+    }
+    console.log(obj);
+    axios.post(BACKEND_URL+'/updatebooking',obj)
+    .then( res => {
+      this.props.history.push(`/Confirmation`);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    return;
+  }
+  const bookingID = uuid();
+  const rooms = this.state.rooms
+  const bookings = []
+  var flag = false;
+  for(let i=0;i<rooms.length;i++){
+    if(rooms.desired_quantity==0) continue
+    const bookingDetails = {
+      userId:JSON.parse(localStorage.getItem('accesstoken')).id,
+      hotelId:JSON.parse(localStorage.getItem('hotelDetails'))._id,
+      name:JSON.parse(localStorage.getItem('hotelDetails')).name,
+      checkInDate:this.state.date_in,
+      checkOutDate:this.state.date_out,
+      roomPrice:rooms[i].price,
+      roomType:rooms[i].bed_type,
+      roomCount:rooms[i].desired_quantity,
+      amountPaid:this.props.totalPrice,
+      bookingStatus:"Active",
+      bookingID:bookingID
+    }
+    console.log(bookingDetails);
+    await axios.post(BACKEND_URL+"/createBooking",bookingDetails)
+                .then((res)=>{
+                  console.log(res);
+                  flag = true;
+                })
+                .catch((err)=>{
+                  console.log(err);
+                  flag = false;
+                })        
+  }
+  if(flag){
+    this.props.history.push(`/Confirmation`);
+  }
 }
 
 
@@ -493,6 +549,7 @@ const address = this.props.address
 const country = this.props.country
 const totalPrice = this.props.totalPrice
 const rooms = this.props.rooms
+const transaction_id = this.props.transaction_id;
 const nights_stayed = ((new Date(date_out) - new Date(date_in)) / (24 * 60 * 60 * 1000));
 
 //console.log("test"+rooms)
